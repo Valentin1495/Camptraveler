@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 
 export default function Header() {
   return (
-    <header className='h-16 sticky justify-between top-0 flex items-center space-x-5 px-3'>
+    <header className='h-16 z-30 bg-white sticky justify-between top-0 flex items-center space-x-5 px-3'>
       <Link to='/' className='font-bold'>
         Unsplash
       </Link>

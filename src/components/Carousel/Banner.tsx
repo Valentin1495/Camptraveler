@@ -29,7 +29,7 @@ export default function Banner() {
     return <p>An error has occurred: + {error.message}</p>;
 
   return (
-    <div className='overflow-hidden w-full h-[600px]'>
+    <div className='overflow-hidden w-full h-[500px]'>
       <BannerCol
         key={banner?.collectionId}
         collectionId={banner?.collectionId}
