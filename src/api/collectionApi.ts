@@ -16,3 +16,8 @@ export const getItemsPerPage = (id: string, page: number) =>
   api
     .get(`/api/items/collections/${id}?page=${page}&size=15`)
     .then((res) => res.data);
+
+export const search = (keyword: string, page: number) =>
+  api
+    .get(`/api/search?keyword=${keyword}&page=${page}&size=15`)
+    .then((res) => res.data);
