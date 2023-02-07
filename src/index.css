@@ -9,4 +9,8 @@
   .card:hover .card-img {
     transform: scale(1.2);
   }
+
+  .text {
+    @apply text-lg text-[#707A83] font-semibold;
+  }
 }

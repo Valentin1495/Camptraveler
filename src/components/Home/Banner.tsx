@@ -2,6 +2,7 @@ import axios from 'axios';
 import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
 import BannerCol from './BannerCol';
+import { getHomeCol } from '../../api/collectionApi';
 
 export interface ColInfo {
   collectionId: number | undefined;
@@ -12,13 +13,8 @@ export interface ColInfo {
 export default function Banner() {
   const [banner, setBanner] = useState<ColInfo>();
   const { isLoading, error } = useQuery<ColInfo[]>({
-    queryKey: ['collections', 'main', { page: 1, size: 12 }],
-    queryFn: () =>
-      axios
-        .get(
-          `${import.meta.env.VITE_API_URL}/api/collections/main?page=1&size=12`
-        )
-        .then((res) => res.data),
+    queryKey: ['mainCollection'],
+    queryFn: () => getHomeCol(1, 12),
     onSuccess: (data) =>
       setBanner(data[Math.floor(Math.random() * data.length)]),
   });

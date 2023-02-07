@@ -1,11 +1,9 @@
-import Banner from '../components/Carousel/Banner';
-import Gallery from '../components/Carousel/Gallery';
-import Header from '../components/Header/Header';
+import Banner from '../components/Home/Banner';
+import Gallery from '../components/Home/Gallery';
 
 export default function Home() {
   return (
     <div>
-      <Header />
       <Banner />
       <Gallery />
     </div>

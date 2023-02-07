@@ -1,12 +1,12 @@
 import { Link } from 'react-router-dom';
-import { ImageProps } from './Gallery';
+import { ColProps } from './Home/Gallery';
 
-export default function Image({
+export default function ColCard({
   collectionId,
   collectionName,
   logoImgName,
   description,
-}: ImageProps) {
+}: ColProps) {
   return (
     <Link
       to={`/collection/${collectionId}`}
