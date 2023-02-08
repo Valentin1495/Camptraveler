@@ -4,7 +4,7 @@ import Layout from './components/Layout';
 import CollectionDetails from './pages/CollectionDetails';
 import Search from './pages/Search';
 import NotFound from './pages/NotFound';
-import Signup from './pages/Signup';
+import Register from './pages/Register';
 
 function App() {
   return (
@@ -17,7 +17,7 @@ function App() {
           <Route path='search' element={<Search />} />
           <Route path='*' element={<NotFound />} />
         </Route>
-        <Route path='signup' element={<Signup />} />
+        <Route path='signup' element={<Register />} />
 
         {/* <Route path='/collections' element={<MyCollections />} /> */}
         {/* <Route path='/collection/create' element={<CreateCollection />} /> */}

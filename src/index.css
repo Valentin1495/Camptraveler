@@ -22,4 +22,8 @@
   .err-msg {
     @apply text-red-500 text-sm;
   }
+
+  .auth-btn {
+    @apply w-fit mx-auto px-3 py-1.5 font-bold hover:opacity-80 text-white bg-brand-color rounded-md;
+  }
 }
