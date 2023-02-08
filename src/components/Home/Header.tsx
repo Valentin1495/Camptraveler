@@ -26,7 +26,7 @@ export default function Header() {
     });
   };
   return (
-    <header className='h-16 z-30 bg-white sticky justify-between top-0 flex items-center space-x-5 px-3'>
+    <header className='h-16 z-30 bg-white sticky justify-between top-0 flex items-center pr-8 pl-6'>
       <Link to='/' className='font-bold flex items-center'>
         <img
           src='https://www.nfteam008.com/static/media/logo.eec723a59df921859c59.png'

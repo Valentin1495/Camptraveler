@@ -3,14 +3,16 @@
 @tailwind utilities;
 
 @layer components {
-  .card:hover .card-img {
-    transform: scale(1.2);
-  }
-  .card:hover .card-img {
-    transform: scale(1.2);
-  }
-
   .text {
     @apply text-lg text-[#707A83] font-semibold;
+  }
+  .bg-brand-color {
+    @apply bg-[#1868B7];
+  }
+  .text-brand-color {
+    @apply text-[#1868B7];
+  }
+  .signup-input {
+    @apply border-b outline-none;
   }
 }

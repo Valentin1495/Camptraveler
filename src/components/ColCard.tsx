@@ -10,7 +10,7 @@ export default function ColCard({
   return (
     <Link
       to={`/collection/${collectionId}`}
-      className='duration-300 hover:shadow-xl shadow-md hover:-translate-y-1.5 relative w-full h-full aspect-square inline-block rounded-xl shadow-m overflow-hidden'
+      className='duration-300 hover:shadow-lg shadow-md hover:-translate-y-1.5 relative w-full h-full aspect-square inline-block rounded-xl shadow-m overflow-hidden'
     >
       <div className='h-3/4 w-full overflow-hidden'>
         <img

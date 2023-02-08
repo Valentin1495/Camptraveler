@@ -4,6 +4,23 @@ const api = axios.create({
   baseURL: import.meta.env.VITE_API_URL,
 });
 
+export const signup = ({
+  email,
+  password,
+  nickname,
+}: {
+  email: string;
+  password: string;
+  nickname: string;
+}) =>
+  api
+    .post('/api/members', {
+      email,
+      password,
+      nickname,
+    })
+    .then((res) => res.data);
+
 export const getCollection = (id: string) =>
   api.get(`/api/collections/only/${id}`).then((res) => res.data);
 

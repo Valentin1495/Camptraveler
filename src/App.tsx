@@ -4,6 +4,7 @@ import Layout from './components/Layout';
 import CollectionDetails from './pages/CollectionDetails';
 import Search from './pages/Search';
 import NotFound from './pages/NotFound';
+import Signup from './pages/Signup';
 
 function App() {
   return (
@@ -16,12 +17,13 @@ function App() {
           <Route path='search' element={<Search />} />
           <Route path='*' element={<NotFound />} />
         </Route>
+        <Route path='signup' element={<Signup />} />
 
-        {/* <Route path='/collections' element={<MyCollection />} />
-        <Route path='/collection/create' element={<CreateCollection />} />
-        <Route path='asset/create' element={<CreateItem />} />
-        <Route path='/account/:memberId' element={<MyAccount />} />
-        <Route path='/account/profile' element={<EditProfile />} /> */}
+        {/* <Route path='/collections' element={<MyCollections />} /> */}
+        {/* <Route path='/collection/create' element={<CreateCollection />} /> */}
+        {/* <Route path='asset/create' element={<CreateItem />} /> */}
+        {/* <Route path='/account/:memberId' element={<MyAccount />} /> */}
+        {/* <Route path='/account/profile' element={<EditProfile />} /> */}
       </Routes>
     </div>
   );

@@ -15,7 +15,7 @@ export default function BannerCol({
       <img
         src={import.meta.env.VITE_IMAGE_URL + logoImgName}
         alt='Collection'
-        className='card-img w-full h-full duration-500 object-cover'
+        className='w-full h-full  object-cover'
       />
       <h3 className='w-full truncate pl-3 pb-2 z-20 absolute bottom-0 font-bold text-lg text-white'>
         {collectionName}

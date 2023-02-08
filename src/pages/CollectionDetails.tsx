@@ -11,7 +11,7 @@ import ItemCard from '../components/ItemCard';
 import { ColProps } from '../components/Home/Gallery';
 
 export interface Item {
-  itemId: number;
+  itemId?: number;
   itemImageName: string;
   itemName: string;
   itemPrice: number;
@@ -59,7 +59,7 @@ export default function CollectionDetails() {
     getNextPageParam: (lastPage, pages) =>
       lastPage.hasNext ? pages.length + 1 : undefined,
   });
-  //   console.log(items);
+
   useEffect(() => {
     if (inView) {
       fetchNextPage();
@@ -160,7 +160,6 @@ export default function CollectionDetails() {
                   itemImageName={item.itemImageName}
                   itemName={item.itemName}
                   itemPrice={item.itemPrice}
-                  itemId={item.itemId}
                   coinName={item.coinName}
                   coinImage={item.coinImage}
                   collectionName={item.collectionName}
