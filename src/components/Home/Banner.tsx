@@ -2,7 +2,7 @@ import axios from 'axios';
 import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
 import BannerCol from './BannerCol';
-import { getHomeCol } from '../../api/collectionApi';
+import { getHomeCol } from '../../api/NFTeamApi';
 
 export interface ColInfo {
   collectionId: number | undefined;

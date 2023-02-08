@@ -6,7 +6,7 @@ import { format } from 'date-fns';
 import { useQuery, useInfiniteQuery } from '@tanstack/react-query';
 import { useInView } from 'react-intersection-observer';
 import NotFound from './NotFound';
-import { getCollection, getItemsPerPage } from '../api/collectionApi';
+import { getCollection, getItemsPerPage } from '../api/NFTeamApi';
 import ItemCard from '../components/ItemCard';
 import { ColProps } from '../components/Home/Gallery';
 

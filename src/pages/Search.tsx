@@ -5,7 +5,7 @@ import { useEffect } from 'react';
 import ColResults from '../components/Search/ColResults';
 import { Item } from './CollectionDetails';
 import ItemCard from '../components/ItemCard';
-import { search } from '../api/collectionApi';
+import { search } from '../api/NFTeamApi';
 
 export default function Search() {
   const [searchParams] = useSearchParams();

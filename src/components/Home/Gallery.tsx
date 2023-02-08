@@ -3,7 +3,7 @@ import { ColInfo } from './Banner';
 import { useInView } from 'react-intersection-observer';
 import { useEffect } from 'react';
 import ColCard from '../ColCard';
-import { getHomeCol } from '../../api/collectionApi';
+import { getHomeCol } from '../../api/NFTeamApi';
 
 export interface ColProps extends ColInfo {
   description: string;

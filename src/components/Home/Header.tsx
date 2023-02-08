@@ -49,14 +49,14 @@ export default function Header() {
         className='min-w-fit md:flex items-center space-x-2 font-bold'
       >
         <MdCollections className='h-6 w-6' />
-        <h1 className='hidden md:block'>My Collections</h1>
+        <h1 className='hidden lg:block'>My Collections</h1>
       </Link>
       <Link
         to='/collections/create'
         className='font-bold md:flex items-center space-x-2'
       >
         <RiPencilFill className='h-6 w-6' />
-        <h1 className='hidden md:block'>Create</h1>
+        <h1 className='hidden lg:block'>Create</h1>
       </Link>
       <Link to='/account' className='inline-block min-w-fit'>
         <img
