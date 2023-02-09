@@ -7,8 +7,6 @@ export const api = axios.create({
   baseURL: import.meta.env.VITE_API_URL,
 });
 
-const auth = useAuth()?.auth;
-
 export const signup = ({ email, password, nickname }: UserInfo) =>
   api.post('/api/members', {
     email,
@@ -22,10 +20,12 @@ export const login = ({ email, password }: User) =>
     password,
   });
 
-export const reissue = () =>
-  api.get('/auth/reissue', {
+export const reissue = () => {
+  const auth = useAuth()?.auth;
+  return api.get('/auth/reissue', {
     headers: { refreshtoken: auth?.refreshToken },
   });
+};
 
 export const getCollection = (id: string) =>
   api.get(`/api/collections/only/${id}`).then((res) => res.data);

@@ -6,6 +6,8 @@ import Search from './pages/Search';
 import NotFound from './pages/NotFound';
 import Register from './pages/Register';
 import Signin from './pages/Signin';
+import RequireAuth from './components/RequireAuth';
+import MyCollections from './pages/MyCollections';
 
 function App() {
   return (
@@ -20,10 +22,13 @@ function App() {
         <Route path='signup' element={<Register />} />
         <Route path='signin' element={<Signin />} />
 
-        {/* <Route path='/collections' element={<MyCollections />} /> */}
+        <Route element={<RequireAuth />}>
+          <Route path='/collections' element={<MyCollections />} />
+        </Route>
+
         {/* <Route path='/collection/create' element={<CreateCollection />} /> */}
         {/* <Route path='asset/create' element={<CreateItem />} /> */}
-        {/* <Route path='/account/:memberId' element={<MyAccount />} /> */}
+        {/* <Route path='/account/:memberId' element={<Account />} /> */}
         {/* <Route path='/account/profile' element={<EditProfile />} /> */}
       </Routes>
     </div>

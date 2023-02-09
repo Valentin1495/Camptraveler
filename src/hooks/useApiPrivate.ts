@@ -4,7 +4,7 @@ import useRefreshToken from './useRefreshToken';
 import { api } from '../api/NFTeamApi';
 import { AxiosError } from 'axios';
 
-const useAxiosPrivate = () => {
+const useApiPrivate = () => {
   const reissue = useRefreshToken();
   const auth = useAuth()?.auth;
 
@@ -41,4 +41,4 @@ const useAxiosPrivate = () => {
   return api;
 };
 
-export default useAxiosPrivate;
+export default useApiPrivate;
