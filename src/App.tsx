@@ -5,6 +5,7 @@ import CollectionDetails from './pages/CollectionDetails';
 import Search from './pages/Search';
 import NotFound from './pages/NotFound';
 import Register from './pages/Register';
+import Signin from './pages/Signin';
 
 function App() {
   return (
@@ -12,12 +13,12 @@ function App() {
       <Routes>
         <Route path='/' element={<Layout />}>
           <Route index element={<Home />} />
-
           <Route path='collection/:id' element={<CollectionDetails />} />
           <Route path='search' element={<Search />} />
           <Route path='*' element={<NotFound />} />
         </Route>
         <Route path='signup' element={<Register />} />
+        <Route path='signin' element={<Signin />} />
 
         {/* <Route path='/collections' element={<MyCollections />} /> */}
         {/* <Route path='/collection/create' element={<CreateCollection />} /> */}

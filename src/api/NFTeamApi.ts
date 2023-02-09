@@ -1,25 +1,31 @@
 import axios from 'axios';
+import { UserInfo } from '../pages/Register';
+import { User } from '../pages/Signin';
+import useAuth from '../hooks/useAuth';
 
-const api = axios.create({
+export const api = axios.create({
   baseURL: import.meta.env.VITE_API_URL,
 });
 
-export const signup = ({
-  email,
-  password,
-  nickname,
-}: {
-  email: string;
-  password: string;
-  nickname: string;
-}) =>
-  api
-    .post('/api/members', {
-      email,
-      password,
-      nickname,
-    })
-    .then((res) => res.data);
+const auth = useAuth()?.auth;
+
+export const signup = ({ email, password, nickname }: UserInfo) =>
+  api.post('/api/members', {
+    email,
+    password,
+    nickname,
+  });
+
+export const login = ({ email, password }: User) =>
+  api.post('/auth/login', {
+    email,
+    password,
+  });
+
+export const reissue = () =>
+  api.get('/auth/reissue', {
+    headers: { refreshtoken: auth?.refreshToken },
+  });
 
 export const getCollection = (id: string) =>
   api.get(`/api/collections/only/${id}`).then((res) => res.data);

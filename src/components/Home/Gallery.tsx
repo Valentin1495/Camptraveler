@@ -25,7 +25,7 @@ export default function Gallery() {
       fetchNextPage();
     }
   }, [inView]);
-  console.log(data);
+
   return (
     <div className='p-[2rem] mt-[2rem] space-y-5'>
       {status === 'loading' ? (

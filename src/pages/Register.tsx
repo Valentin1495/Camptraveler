@@ -7,7 +7,7 @@ import { AxiosError } from 'axios';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 
-interface UserInfo {
+export interface UserInfo {
   email: string;
   password: string;
   nickname: string;
