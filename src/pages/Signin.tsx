@@ -44,7 +44,7 @@ export default function Signin() {
     onSuccess: (res) => {
       queryClient.invalidateQueries({ queryKey: ['users'] });
       localStorage.setItem('id', res.data.id);
-      localStorage.setItem('prfilePic', res.data.profileImageName);
+      localStorage.setItem('profilePic', res.data.profileImageName);
       localStorage.setItem('accessToken', res.headers.authorization);
       localStorage.setItem('refreshToken', res.headers.refreshtoken);
       navigate(from, { replace: true });
@@ -103,7 +103,11 @@ export default function Signin() {
           )}
         </section>
 
-        <button type='submit' className='auth-btn'>
+        <button
+          type='submit'
+          disabled={isLoading}
+          className='disabled:cursor-not-allowed opacity-80 auth-btn'
+        >
           {isLoading ? 'Loading...' : 'Sign in'}
         </button>
 

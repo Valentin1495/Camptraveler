@@ -133,7 +133,11 @@ export default function Register() {
               )}
             </section>
 
-            <button type='submit' className='auth-btn'>
+            <button
+              type='submit'
+              disabled={isLoading}
+              className='disabled:opacity-80 auth-btn'
+            >
               {isLoading ? 'Loading...' : 'Sign up'}
             </button>
 

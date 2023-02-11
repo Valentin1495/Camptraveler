@@ -1,13 +1,15 @@
-import { useQuery } from '@tanstack/react-query';
 import { logout } from '../api/NFTeamApi';
 
-const useLogout = () => {
-  useQuery({
-    queryKey: ['logout'],
-    queryFn: () => logout(),
-    onSuccess: () => localStorage.clear(),
-    onError: (err: Error) => console.error(err),
-  });
+const useLogout = async () => {
+  try {
+    const res = await logout();
+    if (res.status === 200) {
+      localStorage.clear();
+      location.replace('/');
+    }
+  } catch (error) {
+    console.error(error);
+  }
 };
 
 export default useLogout;

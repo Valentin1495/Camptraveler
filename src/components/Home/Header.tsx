@@ -3,9 +3,8 @@ import { MdCollections } from 'react-icons/md';
 import { RiPencilFill } from 'react-icons/ri';
 import { BiUserCircle } from 'react-icons/bi';
 import { HiArrowRightOnRectangle } from 'react-icons/hi2';
+import { HiArrowLeftOnRectangle } from 'react-icons/hi2';
 import { FormEvent, useState } from 'react';
-import { useQuery } from '@tanstack/react-query';
-import { getUser } from '../../api/NFTeamApi';
 import useLogout from '../../hooks/useLogout';
 
 export default function Header() {
@@ -25,13 +24,8 @@ export default function Header() {
     });
   };
 
-  const id = localStorage.getItem('id');
-
-  const { error, data } = useQuery({
-    queryKey: ['user', id],
-    queryFn: () => getUser(id!),
-    retry: 1,
-  });
+  const accessToken = localStorage.getItem('accessToken');
+  const profilePic = localStorage.getItem('profilePic');
 
   return (
     <header className='h-16 z-30 bg-white sticky justify-between top-0 flex items-center pr-8 pl-6'>
@@ -66,25 +60,37 @@ export default function Header() {
         <RiPencilFill className='h-6 w-6' />
         <h1 className='hidden lg:block'>Create</h1>
       </Link>
-      <section className='relative'>
-        <Link to='/account' className='profile-pic inline-block min-w-fit'>
-          {data ? (
+      <section className='relative mt-1.5 min-w-fit h-full'>
+        <Link to='/account' className='dropdown-link h-full flex items-center'>
+          {profilePic ? (
             <img
-              src={data.member.profileImageName}
+              src={profilePic}
               alt='Profile picture'
-              className='w-8 h-8 rounded-full object-cover
-          '
+              className='w-8 h-8 rounded-full object-cover'
             />
           ) : (
             <BiUserCircle className='h-8 w-8' />
           )}
         </Link>
-        <ul className='bg-gray-200 opacity-0 absolute w-32 top-[calc(100%)] right-0 p-1.5 rounded-sm'>
-          <li className='flex items-center space-x-1.5'>
-            <HiArrowRightOnRectangle className='h-6 w-6' />
-            <span>Log Out</span>
-          </li>
-        </ul>
+        <article className='dropdown-menu shadow-md bg-white top-[calc(100%)] opacity-0 absolute w-32 right-0 rounded-sm'>
+          {accessToken ? (
+            <button
+              onClick={() => useLogout()}
+              className='flex items-center w-full p-1.5 space-x-1.5'
+            >
+              <HiArrowRightOnRectangle className='h-6 w-6' />
+              <span className='font-bold'>Log Out</span>
+            </button>
+          ) : (
+            <button
+              onClick={() => navigate('/signin')}
+              className='flex items-center w-full p-1.5 space-x-1.5'
+            >
+              <HiArrowLeftOnRectangle className='h-6 w-6' />
+              <span className='font-bold'>Log In</span>
+            </button>
+          )}
+        </article>
       </section>
     </header>
   );

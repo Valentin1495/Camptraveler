@@ -27,7 +27,20 @@
     @apply w-fit mx-auto px-3 py-1.5 font-bold hover:opacity-80 text-white bg-brand-color rounded-md;
   }
 
-  .profile-pic:hover > ul + li {
-    @apply opacity-100;
+  .dropdown-menu {
+    transform: translateY(-10px);
+    pointer-events: none;
+  }
+  .dropdown-menu:hover {
+    opacity: 1;
+    transform: translateY(0px);
+    pointer-events: auto;
+  }
+
+  .dropdown-link:hover + .dropdown-menu {
+    opacity: 1;
+    transform: translateY(0px);
+    transition: all 150ms ease-in-out;
+    pointer-events: auto;
   }
 }
