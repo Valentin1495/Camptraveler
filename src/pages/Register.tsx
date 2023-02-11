@@ -4,8 +4,8 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { AxiosError } from 'axios';
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 
 export interface UserInfo {
   email: string;
@@ -66,6 +66,16 @@ export default function Register() {
   const onSubmit = (data: UserInfo) => {
     mutate(data);
   };
+
+  const navigate = useNavigate();
+  const location = useLocation();
+  const from = location.state?.from?.pathname || '/';
+
+  useEffect(() => {
+    if (localStorage.getItem('accessToken')) {
+      navigate(from, { replace: true });
+    }
+  }, [from]);
 
   return (
     <div className='flex items-center justify-center h-screen'>

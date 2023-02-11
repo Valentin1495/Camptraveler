@@ -1,11 +1,12 @@
 import axios from 'axios';
 import { UserInfo } from '../pages/Register';
 import { User } from '../pages/Signin';
-import useAuth from '../hooks/useAuth';
 
 export const api = axios.create({
   baseURL: import.meta.env.VITE_API_URL,
 });
+
+const RefreshToken = localStorage.getItem('refreshToken');
 
 export const signup = ({ email, password, nickname }: UserInfo) =>
   api.post('/api/members', {
@@ -20,12 +21,20 @@ export const login = ({ email, password }: User) =>
     password,
   });
 
-export const reissue = () => {
-  const auth = useAuth()?.auth;
-  return api.get('/auth/reissue', {
-    headers: { refreshtoken: auth?.refreshToken },
+export const logout = () => {
+  return api.get('/auth/logout', {
+    headers: { RefreshToken },
   });
 };
+
+export const reissue = () => {
+  return api.get('/auth/reissue', {
+    headers: { RefreshToken },
+  });
+};
+
+export const getUser = (id: string) =>
+  api.get('/api/members/' + id).then((res) => res.data);
 
 export const getCollection = (id: string) =>
   api.get(`/api/collections/only/${id}`).then((res) => res.data);

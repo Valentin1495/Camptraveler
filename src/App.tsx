@@ -11,7 +11,7 @@ import MyCollections from './pages/MyCollections';
 
 function App() {
   return (
-    <div className=''>
+    <div>
       <Routes>
         <Route path='/' element={<Layout />}>
           <Route index element={<Home />} />

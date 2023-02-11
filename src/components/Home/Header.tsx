@@ -1,18 +1,17 @@
-import {
-  Link,
-  createSearchParams,
-  useLocation,
-  useNavigate,
-} from 'react-router-dom';
+import { Link, createSearchParams, useNavigate } from 'react-router-dom';
 import { MdCollections } from 'react-icons/md';
 import { RiPencilFill } from 'react-icons/ri';
+import { BiUserCircle } from 'react-icons/bi';
+import { HiArrowRightOnRectangle } from 'react-icons/hi2';
 import { FormEvent, useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import { getUser } from '../../api/NFTeamApi';
+import useLogout from '../../hooks/useLogout';
 
 export default function Header() {
   const [searchValue, setSearchValue] = useState<string>('');
 
   const navigate = useNavigate();
-  const location = useLocation();
 
   const params = { q: searchValue };
 
@@ -25,6 +24,15 @@ export default function Header() {
       search: `?${createSearchParams(params)}`,
     });
   };
+
+  const id = localStorage.getItem('id');
+
+  const { error, data } = useQuery({
+    queryKey: ['user', id],
+    queryFn: () => getUser(id!),
+    retry: 1,
+  });
+
   return (
     <header className='h-16 z-30 bg-white sticky justify-between top-0 flex items-center pr-8 pl-6'>
       <Link to='/' className='font-bold flex items-center'>
@@ -58,14 +66,26 @@ export default function Header() {
         <RiPencilFill className='h-6 w-6' />
         <h1 className='hidden lg:block'>Create</h1>
       </Link>
-      <Link to='/account' className='inline-block min-w-fit'>
-        <img
-          src='https://images.unsplash.com/photo-1675339739656-55dd61d08570?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80'
-          alt='Profile picture'
-          className='w-8 h-8 rounded-full object-cover
-        '
-        />
-      </Link>
+      <section className='relative'>
+        <Link to='/account' className='profile-pic inline-block min-w-fit'>
+          {data ? (
+            <img
+              src={data.member.profileImageName}
+              alt='Profile picture'
+              className='w-8 h-8 rounded-full object-cover
+          '
+            />
+          ) : (
+            <BiUserCircle className='h-8 w-8' />
+          )}
+        </Link>
+        <ul className='bg-gray-200 opacity-0 absolute w-32 top-[calc(100%)] right-0 p-1.5 rounded-sm'>
+          <li className='flex items-center space-x-1.5'>
+            <HiArrowRightOnRectangle className='h-6 w-6' />
+            <span>Log Out</span>
+          </li>
+        </ul>
+      </section>
     </header>
   );
 }

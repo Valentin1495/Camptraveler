@@ -1,18 +1,17 @@
 import { useEffect } from 'react';
-import useAuth from './useAuth';
 import useRefreshToken from './useRefreshToken';
 import { api } from '../api/NFTeamApi';
 import { AxiosError } from 'axios';
 
 const useApiPrivate = () => {
   const reissue = useRefreshToken();
-  const auth = useAuth()?.auth;
+  const accessToken = localStorage.getItem('accessToken');
 
   useEffect(() => {
     const requestIntercept = api.interceptors.request.use(
       (config) => {
         if (!config.headers['Authorization']) {
-          config.headers['Authorization'] = auth?.accessToken;
+          config.headers['Authorization'] = accessToken;
         }
         return config;
       },
@@ -36,7 +35,7 @@ const useApiPrivate = () => {
       api.interceptors.request.eject(requestIntercept);
       api.interceptors.response.eject(responseIntercept);
     };
-  }, [auth, reissue]);
+  }, [accessToken, reissue]);
 
   return api;
 };

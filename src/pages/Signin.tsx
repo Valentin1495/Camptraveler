@@ -4,10 +4,9 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { AxiosError } from 'axios';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { UserInfo } from './Register';
-import useAuth from '../hooks/useAuth';
 
 export type User = Omit<UserInfo, 'nickname'>;
 
@@ -35,25 +34,20 @@ export default function Signin() {
 
   const location = useLocation();
   const navigate = useNavigate();
-  const from = location.state?.from?.pathname || '/';
-  const setAuth = useAuth()?.setAuth;
   const [errMsg, setErrMsg] = useState<string>('');
+  const from = location.state?.from?.pathname || '/';
+
   const queryClient = new QueryClient();
 
   const { mutate, isLoading } = useMutation({
     mutationFn: (user: User) => login(user),
     onSuccess: (res) => {
       queryClient.invalidateQueries({ queryKey: ['users'] });
-      if (setAuth) {
-        setAuth({
-          id: res.data.id,
-          email: res.data.email,
-          profileImageName: res.data.profileImageName,
-          accessToken: res.headers.authorization,
-          refreshToken: res.headers.refreshtoken,
-        });
-        navigate(from, { replace: true });
-      }
+      localStorage.setItem('id', res.data.id);
+      localStorage.setItem('prfilePic', res.data.profileImageName);
+      localStorage.setItem('accessToken', res.headers.authorization);
+      localStorage.setItem('refreshToken', res.headers.refreshtoken);
+      navigate(from, { replace: true });
     },
     onError: (error: AxiosError) => {
       if (!error.response) {
@@ -69,6 +63,12 @@ export default function Signin() {
   const onSubmit = (data: User) => {
     mutate(data);
   };
+
+  useEffect(() => {
+    if (localStorage.getItem('accessToken')) {
+      navigate(from, { replace: true });
+    }
+  }, [from]);
 
   return (
     <div className='flex items-center justify-center h-screen'>
