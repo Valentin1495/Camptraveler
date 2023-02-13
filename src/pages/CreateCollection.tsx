@@ -1,8 +1,8 @@
-// import CreateCollection from 'components/CreateCollection/CreateCollection';
-
 import { useState } from 'react';
 import CreateLogo from '../components/Collection/CreateLogo';
 import CreateBanner from '../components/Collection/CreateBanner';
+import CreateBio from '../components/Collection/CreateBio';
+import SelectBlockchain from '../components/Collection/SelectBlockchain';
 
 interface Blockchain {
   name: string;
@@ -26,6 +26,7 @@ export default function CreateCollectionPage() {
           <span className='text-red-500 font-bold align-top'>*</span> Required
           fields{' '}
         </span>
+        <SelectBlockchain />
         <CreateLogo
           logoFile={logoFile}
           setLogoFile={setLogoFile}
@@ -40,14 +41,14 @@ export default function CreateCollectionPage() {
           setBannerString={setBannerString}
           setBannerName={setBannerName}
         />
-        {/* <CreateCollection
-            selectedCoin={selectedCoin}
-            setSelectedCoin={setSelectedCoin}
-            logoFile={logoFile}
-            bannerFile={bannerFile}
-            logoName={logoName}
-            bannerName={bannerName}
-          /> */}
+        <CreateBio
+          selectedCoin={selectedCoin}
+          setSelectedCoin={setSelectedCoin}
+          logoFile={logoFile}
+          bannerFile={bannerFile}
+          logoName={logoName}
+          bannerName={bannerName}
+        />
       </div>
     </div>
   );

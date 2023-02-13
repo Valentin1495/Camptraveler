@@ -35,4 +35,12 @@
     transition: all 150ms ease-in-out;
     pointer-events: auto;
   }
+
+  .select-menu {
+    opacity: 0;
+  }
+
+  .select:focus + .select-menu {
+    opacity: 1;
+  }
 }

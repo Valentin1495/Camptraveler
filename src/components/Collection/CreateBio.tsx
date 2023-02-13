@@ -38,7 +38,7 @@ interface ColInfo {
   bannerImgName: string;
 }
 
-export default function CreateCollection({
+export default function CreateBio({
   selectedCoin,
   setSelectedCoin,
   logoFile,
@@ -46,7 +46,6 @@ export default function CreateCollection({
   logoName,
   bannerName,
 }: Props) {
-
   const [nameFocus, setNameFocus] = useState(false);
   const [descFocus, setDescFocus] = useState(false);
   const [collection, setCollection] = useState<SuccessResponse>();
@@ -76,8 +75,6 @@ export default function CreateCollection({
   // });
 
   const onSubmit = async (data: Inputs) => {
-
-
     if (logoFile && bannerFile) {
       // mutate({
       //   coinId: selectedCoin?.id,
@@ -98,12 +95,12 @@ export default function CreateCollection({
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="text-center w-full space-y-10"
+      className='text-center w-full space-y-10'
     >
-      <div className="space-y-3">
-        <label htmlFor="name" className="mx-auto font-bold text-lg">
+      <div className='space-y-3'>
+        <label htmlFor='name' className='mx-auto font-bold text-lg'>
           Name{' '}
-          <span className="text-red-500 text-xl font-bold align-top">*</span>
+          <span className='text-red-500 text-xl font-bold align-top'>*</span>
         </label>
         <div
           className={`border-2 duration-300 rounded-lg ${
@@ -116,26 +113,26 @@ export default function CreateCollection({
           `}
         >
           <input
-            type="text"
+            type='text'
             {...register('name')}
-            placeholder="Example: Treasures of the Sea"
-            className="w-full rounded-lg p-3 text-lg group outline-none h-full  dark:bg-[#3d3d41]"
+            placeholder='Example: Treasures of the Sea'
+            className='w-full rounded-lg p-3 text-lg group outline-none h-full  dark:bg-[#3d3d41]'
             onFocus={() => setNameFocus(true)}
             onBlur={() => setNameFocus(false)}
           />
         </div>
         {errors.name && (
-          <p className="text-red-600 flex items-center space-x-0.5">
-            <RxCross2 className="h-6 w-6" />
+          <p className='text-red-600 flex items-center space-x-0.5'>
+            <RxCross2 className='h-6 w-6' />
             <span>{errors.name.message}</span>
           </p>
         )}
       </div>
 
-      <div className="space-y-3">
-        <label htmlFor="description" className="mx-auto font-bold text-lg">
+      <div className='space-y-3'>
+        <label htmlFor='description' className='mx-auto font-bold text-lg'>
           Description{' '}
-          <span className="text-red-500 text-xl font-bold align-top">*</span>
+          <span className='text-red-500 text-xl font-bold align-top'>*</span>
         </label>
         <div
           className={`border-2 rounded-lg duration-300 ${
@@ -148,28 +145,28 @@ export default function CreateCollection({
         >
           <textarea
             {...register('description')}
-            className="w-full overflow-hidden -mb-1 h-52 min-h-[52px] outline-none p-3 rounded-lg text-lg dark:bg-[#3d3d41]"
+            className='w-full overflow-hidden -mb-1 h-52 min-h-[52px] outline-none p-3 rounded-lg text-lg dark:bg-[#3d3d41]'
             onFocus={() => setDescFocus(true)}
             onBlur={() => setDescFocus(false)}
           />
         </div>
         {errors.description && (
-          <p className="text-red-600 flex items-center space-x-0.5">
-            <RxCross2 className="h-6 w-6" />
+          <p className='text-red-600 flex items-center space-x-0.5'>
+            <RxCross2 className='h-6 w-6' />
             <span>{errors.description.message}</span>
           </p>
         )}
       </div>
 
-      <div className="space-y-10">
-        {/* <Modal selectedCoin={selectedCoin} setSelectedCoin={setSelectedCoin} /> */}
-        <input
-          type="submit"
-          className="bg-emerald-700 disabled:cursor-not-allowed disabled:opacity-50 hover:opacity-90 cursor-pointer font-bold text-white rounded-lg px-5 py-3 text-lg"
-          value="Create"
-          disabled={!logoFile || !bannerFile || !selectedCoin}
-        />
-        {/* {isLoading ? (
+      {/* <Modal selectedCoin={selectedCoin} setSelectedCoin={setSelectedCoin} /> */}
+
+      <input
+        type='submit'
+        className='bg-brand-color disabled:cursor-not-allowed disabled:opacity-50 hover:opacity-90 cursor-pointer font-bold text-white rounded-lg px-5 py-3 text-lg'
+        value='Create'
+        disabled={!logoFile || !bannerFile || !selectedCoin}
+      />
+      {/* {isLoading ? (
           <h5
             className="
         font-bold text-gray-500"
@@ -181,7 +178,6 @@ export default function CreateCollection({
             An error occurred: {error.message}
           </p>
         ) : null} */}
-      </div>
     </form>
   );
 }
