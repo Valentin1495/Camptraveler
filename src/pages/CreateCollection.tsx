@@ -4,19 +4,27 @@ import CreateBanner from '../components/Collection/CreateBanner';
 import CreateBio from '../components/Collection/CreateBio';
 import SelectBlockchain from '../components/Collection/SelectBlockchain';
 
-interface Blockchain {
+export interface Bc {
   name: string;
   id: number;
 }
 
 export default function CreateCollectionPage() {
-  const [logoFile, setLogoFile] = useState<File | null>(null);
-  const [bannerFile, setBannerFile] = useState<File | null>(null);
+  const bcList = [
+    { name: 'Solana', id: 1 },
+    { name: 'Bitcoin', id: 2 },
+    { name: 'Dogecoin', id: 3 },
+    { name: 'Ethereum', id: 4 },
+    { name: 'Ethereum Classic', id: 5 },
+  ];
+
+  const [bc, setBc] = useState<Bc>(bcList[0]);
+  const [logoFile, setLogoFile] = useState<File | undefined>(undefined);
+  const [bannerFile, setBannerFile] = useState<File | undefined>(undefined);
   const [logoString, setLogoString] = useState<string>('');
   const [bannerString, setBannerString] = useState<string>('');
   const [logoName, setLogoName] = useState<string>('');
   const [bannerName, setBannerName] = useState<string>('');
-  const [selectedCoin, setSelectedCoin] = useState<Blockchain | null>(null);
 
   return (
     <div className='mt-20 max-w-2xl mx-auto p-6'>
@@ -26,7 +34,7 @@ export default function CreateCollectionPage() {
           <span className='text-red-500 font-bold align-top'>*</span> Required
           fields{' '}
         </span>
-        <SelectBlockchain />
+        <SelectBlockchain bcList={bcList} bc={bc} setBc={setBc} />
         <CreateLogo
           logoFile={logoFile}
           setLogoFile={setLogoFile}
@@ -41,14 +49,7 @@ export default function CreateCollectionPage() {
           setBannerString={setBannerString}
           setBannerName={setBannerName}
         />
-        <CreateBio
-          selectedCoin={selectedCoin}
-          setSelectedCoin={setSelectedCoin}
-          logoFile={logoFile}
-          bannerFile={bannerFile}
-          logoName={logoName}
-          bannerName={bannerName}
-        />
+        <CreateBio bc={bc} logoName={logoName} bannerName={bannerName} />
       </div>
     </div>
   );

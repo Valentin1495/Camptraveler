@@ -2,8 +2,8 @@ import axios from 'axios';
 import { UserInfo } from '../pages/Register';
 import { User } from '../pages/Signin';
 
-export interface ColInfo {
-  coinId: string;
+export interface ColRequirements {
+  coinId: number;
   name: string;
   description: string;
   logoImgName: string;
@@ -54,18 +54,20 @@ export const createCollection = ({
   description,
   logoImgName,
   bannerImgName,
-}: ColInfo) =>
-  api.post(
-    '/api/collections',
-    {
-      coinId,
-      name,
-      description,
-      logoImgName,
-      bannerImgName,
-    },
-    { headers: { Authorization: accessToken } }
-  );
+}: ColRequirements) =>
+  api
+    .post(
+      '/api/collections',
+      {
+        coinId,
+        name,
+        description,
+        logoImgName,
+        bannerImgName,
+      },
+      { headers: { authorization: accessToken } }
+    )
+    .then((res) => res.data);
 
 export const getHomeCol = (page: number, size: number) =>
   api

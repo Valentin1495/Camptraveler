@@ -4,8 +4,8 @@ import { BsImage } from 'react-icons/bs';
 import useApiPrivate from '../../hooks/useApiPrivate';
 
 interface Logo {
-  logoFile: File | null;
-  setLogoFile: React.Dispatch<React.SetStateAction<File | null>>;
+  logoFile: File | undefined;
+  setLogoFile: React.Dispatch<React.SetStateAction<File | undefined>>;
   logoString: string;
   setLogoString: React.Dispatch<React.SetStateAction<string>>;
   setLogoName: React.Dispatch<React.SetStateAction<string>>;
@@ -47,7 +47,8 @@ export default function CreateLogo({
     }
 
     if (!file) {
-      setLogoFile(null);
+      setLogoFile(undefined);
+      setLogoName('');
     }
   };
 
@@ -100,7 +101,10 @@ export default function CreateLogo({
           alt='logo'
           role='presentation'
           className='h-44 w-44 rounded-full object-cover mt-3 cursor-pointer'
-          onClick={() => setLogoFile(null)}
+          onClick={() => {
+            setLogoFile(undefined);
+            setLogoName('');
+          }}
         />
       ) : (
         <button

@@ -9,7 +9,7 @@ const useRefreshToken = async () => {
     return res.headers.authorization;
   } catch (error) {
     console.error(error);
-    useLogout();
+    // useLogout();
   }
 };
 

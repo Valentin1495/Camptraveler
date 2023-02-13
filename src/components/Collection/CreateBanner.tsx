@@ -4,8 +4,8 @@ import { BsImage } from 'react-icons/bs';
 import useApiPrivate from '../../hooks/useApiPrivate';
 
 interface Banner {
-  bannerFile: File | null;
-  setBannerFile: React.Dispatch<React.SetStateAction<File | null>>;
+  bannerFile: File | undefined;
+  setBannerFile: React.Dispatch<React.SetStateAction<File | undefined>>;
   bannerString: string;
   setBannerString: React.Dispatch<React.SetStateAction<string>>;
   setBannerName: React.Dispatch<React.SetStateAction<string>>;
@@ -46,7 +46,8 @@ export default function CreateBanner({
     }
 
     if (!file) {
-      setBannerFile(null);
+      setBannerFile(undefined);
+      setBannerName('');
     }
   };
 
@@ -100,7 +101,10 @@ export default function CreateBanner({
           alt='logo'
           role='presentation'
           className='h-60 w-full rounded-xl object-cover mt-3 cursor-pointer'
-          onClick={() => setBannerFile(null)}
+          onClick={() => {
+            setBannerFile(undefined);
+            setBannerName('');
+          }}
         />
       ) : (
         <button

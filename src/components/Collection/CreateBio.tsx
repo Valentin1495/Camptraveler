@@ -4,51 +4,30 @@ import * as yup from 'yup';
 import { RxCross2 } from 'react-icons/rx';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useMutation } from '@tanstack/react-query';
+import { Bc } from '../../pages/CreateCollection';
+import { ColRequirements, createCollection } from '../../api/NFTeamApi';
 
 export interface Inputs {
   name: string;
   description: string;
 }
 
-export interface Blockchain {
-  name: string;
-  id: number;
-}
-
-export interface SuccessResponse {
+export interface SuccessRes {
   status: string;
   id: number;
 }
 
-interface Props {
-  selectedCoin: Blockchain | null;
-  setSelectedCoin: React.Dispatch<React.SetStateAction<Blockchain | null>>;
-  logoFile: File | null;
-  bannerFile: File | null;
+interface ColProps {
+  bc: Bc;
   logoName: string;
   bannerName: string;
 }
 
-interface ColInfo {
-  coinId: number | undefined;
-  name: string;
-  description: string;
-  logoImgName: string;
-  bannerImgName: string;
-}
-
-export default function CreateBio({
-  selectedCoin,
-  setSelectedCoin,
-  logoFile,
-  bannerFile,
-  logoName,
-  bannerName,
-}: Props) {
+export default function CreateBio({ bc, logoName, bannerName }: ColProps) {
   const [nameFocus, setNameFocus] = useState(false);
   const [descFocus, setDescFocus] = useState(false);
-  const [collection, setCollection] = useState<SuccessResponse>();
+  const [collection, setCollection] = useState<SuccessRes>();
   const navigate = useNavigate();
 
   const schema = yup.object({
@@ -64,25 +43,20 @@ export default function CreateBio({
     resolver: yupResolver(schema),
   });
 
-  // const queryClient = useQueryClient();
-  // const { mutate, isLoading, error } = useMutation({
-  //   mutationFn: (col: ColInfo) =>
-  //     customAxios.post('/api/collections', col).then((res) => res.data),
-  //   onSuccess: (data) => {
-  //     queryClient.invalidateQueries(['collections'], { exact: true });
-  //     setCollection(data);
-  //   },
-  // });
+  const { mutate, isLoading, error } = useMutation({
+    mutationFn: (col: ColRequirements) => createCollection(col),
+    onSuccess: (data) => setCollection(data),
+  });
 
   const onSubmit = async (data: Inputs) => {
-    if (logoFile && bannerFile) {
-      // mutate({
-      //   coinId: selectedCoin?.id,
-      //   name: data.name,
-      //   description: data.description,
-      //   logoImgName: logoName,
-      //   bannerImgName: bannerName,
-      // });
+    if (logoName && bannerName) {
+      mutate({
+        coinId: bc.id,
+        name: data.name,
+        description: data.description,
+        logoImgName: logoName,
+        bannerImgName: bannerName,
+      });
     }
   };
 
@@ -158,26 +132,17 @@ export default function CreateBio({
         )}
       </div>
 
-      {/* <Modal selectedCoin={selectedCoin} setSelectedCoin={setSelectedCoin} /> */}
-
       <input
         type='submit'
         className='bg-brand-color disabled:cursor-not-allowed disabled:opacity-50 hover:opacity-90 cursor-pointer font-bold text-white rounded-lg px-5 py-3 text-lg'
-        value='Create'
-        disabled={!logoFile || !bannerFile || !selectedCoin}
+        value={isLoading ? 'Creating your collection...' : 'Create'}
+        disabled={!logoName || !bannerName}
       />
-      {/* {isLoading ? (
-          <h5
-            className="
-        font-bold text-gray-500"
-          >
-            Creating a collection...
-          </h5>
-        ) : error instanceof Error ? (
-          <p className="text-red-500 font-semibold mt-3">
-            An error occurred: {error.message}
-          </p>
-        ) : null} */}
+      {error instanceof Error && (
+        <p className='text-red-500 font-semibold mt-3'>
+          An error occurred: {error.message}
+        </p>
+      )}
     </form>
   );
 }

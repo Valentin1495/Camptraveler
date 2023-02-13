@@ -1,11 +1,10 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import useRefreshToken from './useRefreshToken';
 import { api } from '../api/NFTeamApi';
 import { AxiosError } from 'axios';
 
 const useApiPrivate = () => {
   const accessToken = localStorage.getItem('accessToken');
-  const [newAccessToken, setNewAccessToken] = useState();
 
   useEffect(() => {
     const requestIntercept = api.interceptors.request.use(
@@ -23,11 +22,10 @@ const useApiPrivate = () => {
       (error: AxiosError) => {
         const prevReq = error.config;
         if (error.response?.status === 403 && prevReq) {
-          useRefreshToken().then((data) => setNewAccessToken(data));
-
-          if (newAccessToken) {
-            prevReq.headers['authorization'] = newAccessToken;
-          }
+          useRefreshToken().then(
+            (newAccessToken) =>
+              (prevReq.headers['authorization'] = newAccessToken)
+          );
 
           return api(prevReq);
         }
