@@ -54,24 +54,29 @@ export default function Header() {
         <h1 className='hidden lg:block'>My Collections</h1>
       </Link>
       <Link
-        to='/collections/create'
+        to='/asset/create'
         className='font-bold md:flex items-center space-x-2'
       >
         <RiPencilFill className='h-6 w-6' />
         <h1 className='hidden lg:block'>Create</h1>
       </Link>
       <section className='relative mt-1.5 min-w-fit h-full'>
-        <Link to='/account' className='dropdown-link h-full flex items-center'>
-          {profilePic ? (
+        {profilePic ? (
+          <Link
+            to='/account'
+            className='dropdown-link h-full flex items-center'
+          >
             <img
               src={profilePic}
               alt='Profile picture'
               className='w-8 h-8 rounded-full object-cover'
             />
-          ) : (
+          </Link>
+        ) : (
+          <Link to='/signin' className='dropdown-link h-full flex items-center'>
             <BiUserCircle className='h-8 w-8' />
-          )}
-        </Link>
+          </Link>
+        )}
         <article className='dropdown-menu shadow-md bg-white top-[calc(100%)] opacity-0 absolute w-32 right-0 rounded-sm'>
           {accessToken ? (
             <button

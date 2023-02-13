@@ -1,16 +1,16 @@
-import { useQuery } from '@tanstack/react-query';
 import { reissue } from '../api/NFTeamApi';
+import useLogout from './useLogout';
 
-const useRefreshToken = () => {
-  const { data: response } = useQuery({
-    queryKey: ['reissue'],
-    queryFn: () => reissue(),
-    onSuccess: (res) => {
-      localStorage.setItem('accessToken', res.headers.authorization);
-    },
-  });
+const useRefreshToken = async () => {
+  try {
+    const res = await reissue();
 
-  return response?.headers.authorization;
+    localStorage.setItem('accessToken', res.headers.authorization);
+    return res.headers.authorization;
+  } catch (error) {
+    console.error(error);
+    useLogout();
+  }
 };
 
 export default useRefreshToken;

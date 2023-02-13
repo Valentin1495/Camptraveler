@@ -8,6 +8,7 @@ import Register from './pages/Register';
 import Signin from './pages/Signin';
 import RequireAuth from './components/RequireAuth';
 import MyCollections from './pages/MyCollections';
+import CreateCollection from './pages/CreateCollection';
 
 function App() {
   return (
@@ -18,17 +19,18 @@ function App() {
           <Route path='collection/:id' element={<CollectionDetails />} />
           <Route path='search' element={<Search />} />
           <Route path='*' element={<NotFound />} />
-        </Route>
-        <Route path='signup' element={<Register />} />
-        <Route path='signin' element={<Signin />} />
 
-        <Route element={<RequireAuth />}>
-          <Route path='/collections' element={<MyCollections />} />
+          <Route element={<RequireAuth />}>
+            <Route path='/collections' element={<MyCollections />} />
+            <Route path='/collection/create' element={<CreateCollection />} />
+          </Route>
         </Route>
 
-        {/* <Route path='/collection/create' element={<CreateCollection />} /> */}
-        {/* <Route path='asset/create' element={<CreateItem />} /> */}
+        <Route path='/signup' element={<Register />} />
+        <Route path='/signin' element={<Signin />} />
+
         {/* <Route path='/account/:memberId' element={<Account />} /> */}
+        {/* <Route path='asset/create' element={<CreateItem />} /> */}
         {/* <Route path='/account/profile' element={<EditProfile />} /> */}
       </Routes>
     </div>
