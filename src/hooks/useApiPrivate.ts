@@ -9,8 +9,8 @@ const useApiPrivate = () => {
   useEffect(() => {
     const requestIntercept = api.interceptors.request.use(
       (config) => {
-        if (!config.headers['authorization']) {
-          config.headers['authorization'] = accessToken;
+        if (!config.headers['Authorization']) {
+          config.headers['Authorization'] = accessToken;
         }
         return config;
       },
@@ -22,10 +22,10 @@ const useApiPrivate = () => {
       (error: AxiosError) => {
         const prevReq = error.config;
         if (error.response?.status === 403 && prevReq) {
-          useRefreshToken().then(
-            (newAccessToken) =>
-              (prevReq.headers['authorization'] = newAccessToken)
-          );
+          useRefreshToken().then((newAccessToken) => {
+            prevReq.headers['Authorization'] = newAccessToken;
+            localStorage.setItem('accessToken', newAccessToken);
+          });
 
           return api(prevReq);
         }

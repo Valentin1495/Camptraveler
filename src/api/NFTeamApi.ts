@@ -72,6 +72,11 @@ export const createCollection = ({
     )
     .then((res) => res.data);
 
+export const removeCol = (id: number) =>
+  api.delete('/api/collections/' + id, {
+    headers: { authorization: accessToken },
+  });
+
 export const getHomeCol = (page: number, size: number) =>
   api
     .get(`/api/collections/main?page=${page}&size=${size}`)

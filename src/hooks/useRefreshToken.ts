@@ -5,8 +5,6 @@ const useRefreshToken = async () => {
   try {
     const res = await reissue();
 
-    localStorage.setItem('accessToken', res.headers.authorization);
-
     return res.headers.authorization;
   } catch (error) {
     console.error(error);

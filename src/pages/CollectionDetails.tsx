@@ -1,6 +1,5 @@
 import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { BsCheckCircleFill } from 'react-icons/bs';
 import { HiOutlineStar, HiShare } from 'react-icons/hi';
 import { format } from 'date-fns';
 import { useQuery, useInfiniteQuery } from '@tanstack/react-query';
@@ -20,7 +19,7 @@ export interface Item {
   collectionName: string;
 }
 
-interface Collection extends ColProps {
+export interface Collection extends ColProps {
   bannerImgName: string;
   coinId: number;
   coinName: string;
@@ -34,13 +33,12 @@ interface Collection extends ColProps {
   itemList: Item[];
   itemCount: number;
   ownerName: string;
+  ownerId: number;
 }
 
 export default function CollectionDetails() {
   const { id } = useParams();
   const { ref, inView } = useInView();
-  //   const createColOpen = useAppSelector((state) => state.toast.createColOpen);
-  //   setTimeout(() => dispatch(setCreateColOpen(false)), 5000);
 
   const { isLoading, error, data } = useQuery<Collection>({
     queryKey: ['onlyCollection'],
@@ -172,15 +170,6 @@ export default function CollectionDetails() {
           </p>
         </section>
       )}
-
-      {/* <Notification open={createColOpen} setOpen={setCreateColOpen}>
-          <p className="flex items-center gap-1 text-emerald-700">
-            <span>
-              <BsCheckCircleFill className="h-7 w-7" />
-            </span>{' '}
-            Created!
-          </p>
-        </Notification> */}
     </div>
   );
 }
