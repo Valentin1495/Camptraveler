@@ -28,7 +28,7 @@ export default function Header() {
   const profilePic = localStorage.getItem('profilePic');
 
   return (
-    <header className='h-16 z-30 bg-white sticky justify-between top-0 flex items-center pr-8 pl-6'>
+    <header className='h-16 z-30 bg-white sticky justify-between top-0 flex items-center sm:pr-8 pr-2.5 sm:pl-6'>
       <Link to='/' className='font-bold flex items-center'>
         <img
           src='https://www.nfteam008.com/static/media/logo.eec723a59df921859c59.png'
@@ -37,7 +37,7 @@ export default function Header() {
         />
         <h1 className='hidden lg:block'>NFTeam</h1>
       </Link>
-      <form onSubmit={handleSubmit} className='w-3/5'>
+      <form onSubmit={handleSubmit} className='w-1/2 sm:w-3/5'>
         <input
           value={searchValue}
           onChange={(e) => setSearchValue(e.target.value)}
@@ -60,7 +60,7 @@ export default function Header() {
         <RiPencilFill className='h-6 w-6' />
         <h1 className='hidden lg:block'>Create</h1>
       </Link>
-      <section className='relative mt-1.5 min-w-fit h-full'>
+      <section className='relative mt-0.5 min-w-fit h-full'>
         {profilePic ? (
           <Link
             to='/account'

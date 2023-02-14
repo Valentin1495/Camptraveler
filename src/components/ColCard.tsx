@@ -16,11 +16,11 @@ export default function ColCard({
         <img
           src={import.meta.env.VITE_IMAGE_URL + logoImgName}
           alt='collection'
-          className='group-hover:scale-[115%] h-full w-full object-cover duration-500'
+          className='h-full w-full object-cover'
         />
       </div>
 
-      <div className='px-3.5 pt-3.5 space-y-2 sm:space-y-0 md:pt-1 h-1/4'>
+      <div className='px-2 py-1 sm:text-sm md:text-base space-y-2 sm:space-y-0 h-1/4'>
         <h3 className='font-bold max-w-full truncate'>{collectionName}</h3>
         <p className='text-gray-500 font-bold max-w-full truncate'>
           {description}

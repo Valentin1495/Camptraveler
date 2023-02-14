@@ -45,6 +45,9 @@ export const reissue = () => {
 export const getUser = (id: string) =>
   api.get('/api/members/' + id).then((res) => res.data);
 
+export const getUserCols = (id: string) =>
+  api.get('/api/members/' + id).then((res) => res.data.collections);
+
 export const getCollection = (id: string) =>
   api.get(`/api/collections/only/${id}`).then((res) => res.data);
 

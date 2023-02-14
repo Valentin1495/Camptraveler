@@ -36,7 +36,7 @@ export default function Gallery() {
         <div>
           {data?.pages.map((page, idx) => (
             <div
-              className='grid mb-5 grid-cols-1 md:grid-cols-3 gap-5 xl:grid-cols-5'
+              className='grid mb-5 grid-cols-1 sm:grid-cols-3 gap-5 xl:grid-cols-5'
               key={idx}
             >
               {page.map((col: ColProps) => (
