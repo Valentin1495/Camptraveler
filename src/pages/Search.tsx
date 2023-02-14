@@ -36,7 +36,7 @@ export default function Search() {
       <span>Error: {error.message}</span>
     </>
   ) : (
-    <div className='px-8 py-8'>
+    <div className='p-8'>
       <em className='text-lg'>Results for {query}</em>
       <ColResults cols={data?.pages[0].collections} />
       <h5 className='mt-20 font-bold text-lg'>Item results</h5>

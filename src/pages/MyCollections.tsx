@@ -1,13 +1,12 @@
 import { useQuery } from '@tanstack/react-query';
 import { getUserCols } from '../api/NFTeamApi';
 import { Link } from 'react-router-dom';
-import ColCard from '../components/ColCard';
-import { ColProps } from '../components/Home/Gallery';
+import ColResult, { Result } from '../components/Search/ColResult';
 
 export default function MyCollections() {
   const id = localStorage.getItem('id');
 
-  const { isLoading, error, data } = useQuery<ColProps[]>({
+  const { isLoading, error, data } = useQuery<Result[]>({
     queryKey: ['members', id, 'cols'],
     queryFn: () => getUserCols(id!),
   });
@@ -17,7 +16,7 @@ export default function MyCollections() {
   if (error instanceof Error) return <p>Error: + {error.message}</p>;
 
   return (
-    <div className='max-w-sm sm:max-w-7xl p-6 mx-auto h-screen mb-10'>
+    <div className=' p-8 h-screen mb-10'>
       <h1 className='text-3xl md:text-5xl font-bold text-center'>
         My Collections
       </h1>
@@ -35,13 +34,14 @@ export default function MyCollections() {
 
       <section className='grid my-5 grid-cols-1 sm:grid-cols-3 gap-5 xl:grid-cols-5'>
         {data?.map((col) => (
-          <ColCard
-            key={col.collectionId}
-            collectionId={col.collectionId}
-            collectionName={col.collectionName}
-            logoImgName={col.logoImgName}
-            description={col.description}
-          />
+          <article className='group rounded-2xl' key={col.collectionId}>
+            <ColResult
+              collectionId={col.collectionId}
+              logoImgName={col.logoImgName}
+              bannerImgName={col.bannerImgName}
+              collectionName={col.collectionName}
+            />
+          </article>
         ))}
       </section>
     </div>

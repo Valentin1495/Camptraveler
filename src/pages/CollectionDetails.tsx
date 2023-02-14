@@ -1,13 +1,21 @@
 import { useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { HiOutlineStar, HiShare } from 'react-icons/hi';
 import { format } from 'date-fns';
-import { useQuery, useInfiniteQuery } from '@tanstack/react-query';
+import {
+  useQuery,
+  useInfiniteQuery,
+  useQueryClient,
+  useMutation,
+} from '@tanstack/react-query';
 import { useInView } from 'react-intersection-observer';
 import NotFound from './NotFound';
 import { getCollection, getItemsPerPage } from '../api/NFTeamApi';
 import ItemCard from '../components/ItemCard';
 import { ColProps } from '../components/Home/Gallery';
+import { toast } from 'react-toastify';
+import { BiTrash } from 'react-icons/bi';
+import useApiPrivate from '../hooks/useApiPrivate';
 
 export interface Item {
   itemId?: number;
@@ -44,6 +52,20 @@ export default function CollectionDetails() {
     queryKey: ['onlyCollection'],
     queryFn: () => getCollection(id!),
   });
+  const myId = localStorage.getItem('id');
+
+  const queryClient = useQueryClient();
+  const apiPrivate = useApiPrivate();
+  const navigate = useNavigate();
+
+  const { mutate } = useMutation({
+    mutationFn: () => apiPrivate.delete('/api/collections/' + id),
+    onSuccess: () => {
+      queryClient.invalidateQueries(['members', myId, 'cols']);
+      navigate('/collections');
+      toast.success('Your collection has been successfully removed');
+    },
+  });
 
   const {
     data: items,
@@ -66,8 +88,7 @@ export default function CollectionDetails() {
 
   if (isLoading) return <p>Loading...</p>;
 
-  if (error instanceof Error)
-    return <p>An error has occurred: + {error.message}</p>;
+  if (error instanceof Error) return <p>Error: + {error.message}</p>;
 
   if (!data) return <NotFound />;
 
@@ -90,9 +111,14 @@ export default function CollectionDetails() {
         <div className='h-10 w-full' />
         <div className='flex justify-between items-center'>
           <h1 className='text-4xl font-bold'>{data?.collectionName}</h1>
-          <div className='space-x-3 flex dark:text-black'>
+          <div className='space-x-3 flex'>
+            {data?.ownerId.toString() === myId && (
+              <button onClick={() => mutate()} className='shadowBtn'>
+                <BiTrash className='h-6 w-6' />
+              </button>
+            )}
             <button className='shadowBtn'>
-              <HiOutlineStar className='h-6 w-6 ' />
+              <HiOutlineStar className='h-6 w-6' />
             </button>
             <button className='shadowBtn'>
               <HiShare className='h-6 w-6' />
