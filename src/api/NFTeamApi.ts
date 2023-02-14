@@ -2,14 +2,6 @@ import axios from 'axios';
 import { UserInfo } from '../pages/Register';
 import { User } from '../pages/Signin';
 
-export interface ColRequirements {
-  coinId: number;
-  name: string;
-  description: string;
-  logoImgName: string;
-  bannerImgName: string;
-}
-
 export const api = axios.create({
   baseURL: import.meta.env.VITE_API_URL,
 });
@@ -50,27 +42,6 @@ export const getUserCols = (id: string) =>
 
 export const getCollection = (id: string) =>
   api.get(`/api/collections/only/${id}`).then((res) => res.data);
-
-export const createCollection = ({
-  coinId,
-  name,
-  description,
-  logoImgName,
-  bannerImgName,
-}: ColRequirements) =>
-  api
-    .post(
-      '/api/collections',
-      {
-        coinId,
-        name,
-        description,
-        logoImgName,
-        bannerImgName,
-      },
-      { headers: { authorization: accessToken } }
-    )
-    .then((res) => res.data);
 
 export const removeCol = (id: number) =>
   api.delete('/api/collections/' + id, {

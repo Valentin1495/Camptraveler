@@ -9,6 +9,7 @@ import Signin from './pages/Signin';
 import RequireAuth from './components/RequireAuth';
 import MyCollections from './pages/MyCollections';
 import CreateCollection from './pages/CreateCollection';
+import CreateItem from './pages/CreateItem';
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
           <Route element={<RequireAuth />}>
             <Route path='/collections' element={<MyCollections />} />
             <Route path='/collection/create' element={<CreateCollection />} />
+            <Route path='/asset/create' element={<CreateItem />} />
           </Route>
         </Route>
 

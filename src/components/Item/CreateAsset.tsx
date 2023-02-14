@@ -4,45 +4,42 @@ import * as yup from 'yup';
 import { RxCross2 } from 'react-icons/rx';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useMutation } from '@tanstack/react-query';
-import { Bc } from '../../pages/CreateCollection';
-import { toast } from 'react-toastify';
+import { useMutation, useQuery } from '@tanstack/react-query';
+import { Inputs, SuccessRes } from '../Collection/CreateBio';
+import { getUser } from '../../api/NFTeamApi';
 import useApiPrivate from '../../hooks/useApiPrivate';
+import { ColInfo } from '../Home/Banner';
+import SelectCollection from './SelectCollection';
+import { toast } from 'react-toastify';
 
-export interface Inputs {
-  name: string;
-  description: string;
+interface Profile {
+  collections?: ColInfo[];
 }
 
-export interface SuccessRes {
-  status: string;
-  id: number;
+interface Image {
+  itemFile: File | null;
+  itemName: string;
 }
 
-interface ColProps {
-  bc: Bc;
-  logoName: string;
-  bannerName: string;
+interface ItemInfo {
+  itemCollectionId: number | undefined;
+  itemName: string;
+  itemDescription: string;
+  itemImgName: string;
 }
 
-interface ColRequirements {
-  coinId: number;
-  name: string;
-  description: string;
-  logoImgName: string;
-  bannerImgName: string;
-}
+const schema = yup.object({
+  name: yup.string().required('This field is required.'),
+  description: yup.string().required('This field is required.'),
+});
 
-export default function CreateBio({ bc, logoName, bannerName }: ColProps) {
+export default function CreateAsset({ itemFile, itemName }: Image) {
   const [nameFocus, setNameFocus] = useState(false);
   const [descFocus, setDescFocus] = useState(false);
-  const [collection, setCollection] = useState<SuccessRes>();
+  const [collections, setCollections] = useState<ColInfo[] | []>([]);
+  const [item, setItem] = useState<SuccessRes>();
   const navigate = useNavigate();
-
-  const schema = yup.object({
-    name: yup.string().required('This field is required.'),
-    description: yup.string().required('This field is required.'),
-  });
+  const [colSelected, setColSelected] = useState<ColInfo>();
 
   const {
     register,
@@ -52,32 +49,45 @@ export default function CreateBio({ bc, logoName, bannerName }: ColProps) {
     resolver: yupResolver(schema),
   });
 
+  const id = localStorage.getItem('id');
+
+  const { isLoading: loading, error: err } = useQuery<Profile>({
+    queryKey: ['members', id],
+    queryFn: () => getUser(id!),
+    onSuccess: (data) => {
+      if (data.collections?.length) {
+        setCollections(data.collections);
+      }
+    },
+  });
+
   const apiPrivate = useApiPrivate();
 
   const { mutate, isLoading, error } = useMutation({
-    mutationFn: (col: ColRequirements) =>
-      apiPrivate.post('/api/collections', col).then((res) => res.data),
-    onSuccess: (data) => setCollection(data),
+    mutationFn: (item: ItemInfo) =>
+      apiPrivate.post('/api/items', item).then((res) => res.data),
+    onSuccess: (data) => {
+      setItem(data);
+    },
   });
 
   const onSubmit = async (data: Inputs) => {
-    if (logoName && bannerName) {
+    if (itemFile) {
       mutate({
-        coinId: bc.id,
-        name: data.name,
-        description: data.description,
-        logoImgName: logoName,
-        bannerImgName: bannerName,
+        itemCollectionId: colSelected?.collectionId,
+        itemName: data.name,
+        itemDescription: data.description,
+        itemImgName: itemName,
       });
     }
   };
 
   useEffect(() => {
-    if (collection) {
-      navigate(`/collection/${collection.id}`);
-      toast.success('Your collection has been successfully created!');
+    if (item) {
+      navigate(`/item/${item.id}`);
+      toast.success('Your item has been successfully created!');
     }
-  }, [collection, navigate]);
+  }, [item, navigate]);
 
   return (
     <form
@@ -102,8 +112,8 @@ export default function CreateBio({ bc, logoName, bannerName }: ColProps) {
           <input
             type='text'
             {...register('name')}
-            placeholder='Example: Treasures of the Sea'
-            className='w-full rounded-lg p-3 text-lg group outline-none h-full  dark:bg-[#3d3d41]'
+            placeholder='Item name'
+            className='w-full rounded-lg p-3 text-lg group outline-none h-full dark:bg-[#3d3d41]'
             onFocus={() => setNameFocus(true)}
             onBlur={() => setNameFocus(false)}
           />
@@ -135,6 +145,7 @@ export default function CreateBio({ bc, logoName, bannerName }: ColProps) {
             className='w-full overflow-hidden -mb-1 h-52 min-h-[52px] outline-none p-3 rounded-lg text-lg dark:bg-[#3d3d41]'
             onFocus={() => setDescFocus(true)}
             onBlur={() => setDescFocus(false)}
+            placeholder='Provide a detailed description of your item.'
           />
         </div>
         {errors.description && (
@@ -145,17 +156,32 @@ export default function CreateBio({ bc, logoName, bannerName }: ColProps) {
         )}
       </div>
 
+      <SelectCollection
+        isLoading={loading}
+        error={err instanceof Error ? err : null}
+        collections={collections}
+        colSelected={colSelected}
+        setColSelected={setColSelected}
+      />
+
       <input
         type='submit'
-        className='bg-brand-color disabled:cursor-not-allowed disabled:opacity-50 hover:opacity-90 cursor-pointer font-bold text-white rounded-lg px-5 py-3 text-lg'
-        value={isLoading ? 'Creating your collection...' : 'Create'}
-        disabled={!logoName || !bannerName || isLoading}
+        className='bg-brand-color disabled:cursor-not-allowed disabled:opacity-50 hover:bg-hovered cursor-pointer font-bold text-white rounded-lg px-5 py-3 text-lg'
+        value='Create'
+        disabled={!itemFile || !colSelected}
       />
-      {error instanceof Error && (
+      {isLoading ? (
+        <h5
+          className='
+        font-bold text-gray-500'
+        >
+          Creating an item...
+        </h5>
+      ) : error instanceof Error ? (
         <p className='text-red-500 font-semibold mt-3'>
           An error occurred: {error.message}
         </p>
-      )}
+      ) : null}
     </form>
   );
 }

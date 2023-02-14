@@ -34,6 +34,7 @@ export default function CreateCollectionPage() {
           <span className='text-red-500 font-bold align-top'>*</span> Required
           fields{' '}
         </span>
+
         <SelectBlockchain bcList={bcList} bc={bc} setBc={setBc} />
         <CreateLogo
           logoFile={logoFile}

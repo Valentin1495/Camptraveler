@@ -14,11 +14,14 @@ export default function SelectBlockchain({ bcList, bc, setBc }: BcProps) {
 
   return (
     <div className='items-center flex flex-col space-y-3'>
-      <h3 className='font-bold text-lg'>Blockchain</h3>
+      <h3 className='font-bold text-lg'>
+        Blockchain{' '}
+        <span className='text-red-500 text-xl font-bold align-top'>*</span>
+      </h3>
 
       <span
         onClick={() => setShowModal(true)}
-        className='cursor-pointer select border-gray-200 border-2 rounded-md p-2'
+        className='cursor-pointer border-gray-200 border-2 rounded-md p-2'
       >
         {bc.name}
       </span>
