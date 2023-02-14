@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import { useMutation } from '@tanstack/react-query';
 import { Bc } from '../../pages/CreateCollection';
 import { ColRequirements, createCollection } from '../../api/NFTeamApi';
+import { toast } from 'react-toastify';
 
 export interface Inputs {
   name: string;
@@ -48,6 +49,16 @@ export default function CreateBio({ bc, logoName, bannerName }: ColProps) {
     onSuccess: (data) => setCollection(data),
   });
 
+  const options = {
+    position: toast.POSITION.BOTTOM_RIGHT,
+    autoClose: 5000,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+    progress: undefined,
+  };
+
   const onSubmit = async (data: Inputs) => {
     if (logoName && bannerName) {
       mutate({
@@ -63,6 +74,7 @@ export default function CreateBio({ bc, logoName, bannerName }: ColProps) {
   useEffect(() => {
     if (collection) {
       navigate(`/collection/${collection.id}`);
+      toast.success('Your collection has been successfully created!', options);
     }
   }, [collection, navigate]);
 
