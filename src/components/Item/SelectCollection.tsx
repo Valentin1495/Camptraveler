@@ -5,7 +5,7 @@ import CollectionModal from './CollectionModal';
 
 interface Props {
   isLoading: boolean;
-  error: Error | null;
+
   collections: ColInfo[] | undefined;
   colSelected: ColInfo | undefined;
   setColSelected: React.Dispatch<React.SetStateAction<ColInfo | undefined>>;
@@ -13,7 +13,7 @@ interface Props {
 
 export default function SelectCollection({
   isLoading,
-  error,
+
   collections,
   colSelected,
   setColSelected,
@@ -53,7 +53,6 @@ export default function SelectCollection({
         createPortal(
           <CollectionModal
             isLoading={isLoading}
-            error={error}
             collections={collections}
             setColSelected={setColSelected}
             setShowModal={() => setShowModal(false)}

@@ -12,13 +12,12 @@ export interface ColProps extends ColInfo {
 export default function Gallery() {
   const { ref, inView } = useInView();
 
-  const { data, error, fetchNextPage, isFetchingNextPage, status } =
-    useInfiniteQuery({
-      queryKey: ['mainCollections'],
-      queryFn: ({ pageParam = 1 }) => getHomeCol(pageParam, 15),
-      getNextPageParam: (lastPage, pages) =>
-        lastPage.length ? pages.length + 1 : undefined,
-    });
+  const { data, fetchNextPage, isFetchingNextPage, status } = useInfiniteQuery({
+    queryKey: ['mainCollections'],
+    queryFn: ({ pageParam = 1 }) => getHomeCol(pageParam, 15),
+    getNextPageParam: (lastPage, pages) =>
+      lastPage.length ? pages.length + 1 : undefined,
+  });
 
   useEffect(() => {
     if (inView) {
@@ -30,8 +29,6 @@ export default function Gallery() {
     <div className='p-[2rem] mt-[2rem] space-y-5'>
       {status === 'loading' ? (
         <p>Loading...</p>
-      ) : status === 'error' && error instanceof Error ? (
-        <span>Error: {error.message}</span>
       ) : (
         <div>
           {data?.pages.map((page, idx) => (

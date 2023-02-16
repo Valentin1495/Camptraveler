@@ -6,14 +6,12 @@ import ColResult, { Result } from '../components/Search/ColResult';
 export default function MyCollections() {
   const id = localStorage.getItem('id');
 
-  const { isLoading, error, data } = useQuery<Result[]>({
+  const { isLoading, data } = useQuery<Result[]>({
     queryKey: ['members', id, 'cols'],
     queryFn: () => getUserCols(id!),
   });
 
   if (isLoading) return <p>Loading...</p>;
-
-  if (error instanceof Error) return <p>Error: + {error.message}</p>;
 
   return (
     <div className=' p-8 h-screen mb-10'>

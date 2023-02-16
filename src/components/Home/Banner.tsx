@@ -12,7 +12,7 @@ export interface ColInfo {
 
 export default function Banner() {
   const [banner, setBanner] = useState<ColInfo>();
-  const { isLoading, error } = useQuery<ColInfo[]>({
+  const { isLoading } = useQuery<ColInfo[]>({
     queryKey: ['mainCollection'],
     queryFn: () => getHomeCol(1, 12),
     onSuccess: (data) =>
@@ -20,9 +20,6 @@ export default function Banner() {
   });
 
   if (isLoading) return <p>Loading...</p>;
-
-  if (error instanceof Error)
-    return <p>An error has occurred: + {error.message}</p>;
 
   return (
     <div className='overflow-hidden w-full h-[500px]'>

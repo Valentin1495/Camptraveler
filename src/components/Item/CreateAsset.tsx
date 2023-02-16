@@ -51,7 +51,7 @@ export default function CreateAsset({ itemFile, itemName }: Image) {
 
   const id = localStorage.getItem('id');
 
-  const { isLoading: loading, error: err } = useQuery<Profile>({
+  const { isLoading: loading } = useQuery<Profile>({
     queryKey: ['members', id],
     queryFn: () => getUser(id!),
     onSuccess: (data) => {
@@ -63,11 +63,16 @@ export default function CreateAsset({ itemFile, itemName }: Image) {
 
   const apiPrivate = useApiPrivate();
 
-  const { mutate, isLoading, error } = useMutation({
+  const { mutate, isLoading } = useMutation({
     mutationFn: (item: ItemInfo) =>
       apiPrivate.post('/api/items', item).then((res) => res.data),
     onSuccess: (data) => {
       setItem(data);
+    },
+    onError: (err) => {
+      if (err instanceof Error) {
+        toast.error('Something went wrong: ' + err.message);
+      }
     },
   });
 
@@ -158,7 +163,6 @@ export default function CreateAsset({ itemFile, itemName }: Image) {
 
       <SelectCollection
         isLoading={loading}
-        error={err instanceof Error ? err : null}
         collections={collections}
         colSelected={colSelected}
         setColSelected={setColSelected}
@@ -170,18 +174,14 @@ export default function CreateAsset({ itemFile, itemName }: Image) {
         value='Create'
         disabled={!itemFile || !colSelected}
       />
-      {isLoading ? (
+      {isLoading && (
         <h5
           className='
         font-bold text-gray-500'
         >
           Creating an item...
         </h5>
-      ) : error instanceof Error ? (
-        <p className='text-red-500 font-semibold mt-3'>
-          An error occurred: {error.message}
-        </p>
-      ) : null}
+      )}
     </form>
   );
 }

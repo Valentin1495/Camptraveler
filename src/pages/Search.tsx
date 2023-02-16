@@ -11,13 +11,12 @@ export default function Search() {
   const [searchParams] = useSearchParams();
   const query = searchParams.get('q');
 
-  const { status, data, error, isFetchingNextPage, fetchNextPage } =
-    useInfiniteQuery({
-      queryKey: ['search'],
-      queryFn: ({ pageParam = 1 }) => search(query!, pageParam),
-      getNextPageParam: (lastPage, allPages) =>
-        lastPage.items.hasNext ? allPages.length + 1 : undefined,
-    });
+  const { status, data, isFetchingNextPage, fetchNextPage } = useInfiniteQuery({
+    queryKey: ['search'],
+    queryFn: ({ pageParam = 1 }) => search(query!, pageParam),
+    getNextPageParam: (lastPage, allPages) =>
+      lastPage.items.hasNext ? allPages.length + 1 : undefined,
+  });
 
   const { ref, inView } = useInView();
 
@@ -30,10 +29,6 @@ export default function Search() {
   return status === 'loading' ? (
     <>
       <p>Loading...</p>
-    </>
-  ) : status === 'error' && error instanceof Error ? (
-    <>
-      <span>Error: {error.message}</span>
     </>
   ) : (
     <div className='p-8'>

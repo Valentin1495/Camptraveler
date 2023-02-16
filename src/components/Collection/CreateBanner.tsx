@@ -2,6 +2,7 @@ import { useMutation } from '@tanstack/react-query';
 import React, { ChangeEvent, useEffect, useRef, useState } from 'react';
 import { BsImage } from 'react-icons/bs';
 import useApiPrivate from '../../hooks/useApiPrivate';
+import { toast } from 'react-toastify';
 
 interface Banner {
   bannerFile: File | undefined;
@@ -53,11 +54,16 @@ export default function CreateBanner({
 
   const apiPrivate = useApiPrivate();
 
-  const { mutate, isLoading, error } = useMutation({
+  const { mutate, isLoading } = useMutation({
     mutationFn: (file: FormData) =>
       apiPrivate.post('/images', file).then((res) => res.data),
     onSuccess: (data) => {
       setBannerName(data.imageName);
+    },
+    onError: (err) => {
+      if (err instanceof Error) {
+        toast.error('Something went wrong: ' + err.message);
+      }
     },
   });
 
@@ -118,18 +124,14 @@ export default function CreateBanner({
           <div className='rounded-xl bg-black/60 w-[calc(100%-0.5rem)] h-[calc(100%-0.5rem)] absolute top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2 hidden group-hover:block' />
         </button>
       )}
-      {isLoading ? (
+      {isLoading && (
         <h5
           className='mt-3
         font-bold text-gray-500'
         >
           Uploading a banner image...
         </h5>
-      ) : error instanceof Error ? (
-        <p className='text-red-500 font-semibold mt-3'>
-          Error: {error.message}
-        </p>
-      ) : null}
+      )}
       {bannerTypeError && (
         <div className='mt-3 text-center'>
           <h5 className='font-bold text-gray-500'>Unsupported file type</h5>

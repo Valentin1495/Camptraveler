@@ -54,10 +54,15 @@ export default function CreateBio({ bc, logoName, bannerName }: ColProps) {
 
   const apiPrivate = useApiPrivate();
 
-  const { mutate, isLoading, error } = useMutation({
+  const { mutate, isLoading } = useMutation({
     mutationFn: (col: ColRequirements) =>
       apiPrivate.post('/api/collections', col).then((res) => res.data),
     onSuccess: (data) => setCollection(data),
+    onError: (err) => {
+      if (err instanceof Error) {
+        toast.error('Something went wrong: ' + err.message);
+      }
+    },
   });
 
   const onSubmit = async (data: Inputs) => {
@@ -151,11 +156,6 @@ export default function CreateBio({ bc, logoName, bannerName }: ColProps) {
         value={isLoading ? 'Creating your collection...' : 'Create'}
         disabled={!logoName || !bannerName || isLoading}
       />
-      {error instanceof Error && (
-        <p className='text-red-500 font-semibold mt-3'>
-          An error occurred: {error.message}
-        </p>
-      )}
     </form>
   );
 }

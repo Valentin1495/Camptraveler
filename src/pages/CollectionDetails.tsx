@@ -48,7 +48,7 @@ export default function CollectionDetails() {
   const { id } = useParams();
   const { ref, inView } = useInView();
 
-  const { isLoading, error, data } = useQuery<Collection>({
+  const { isLoading, data } = useQuery<Collection>({
     queryKey: ['onlyCollection'],
     queryFn: () => getCollection(id!),
   });
@@ -65,11 +65,15 @@ export default function CollectionDetails() {
       navigate('/collections');
       toast.success('Your collection has been successfully removed');
     },
+    onError: (err) => {
+      if (err instanceof Error) {
+        toast.error('Something went wrong: ' + err.message);
+      }
+    },
   });
 
   const {
     data: items,
-    error: err,
     fetchNextPage,
     isFetchingNextPage,
     status,
@@ -87,8 +91,6 @@ export default function CollectionDetails() {
   }, [inView]);
 
   if (isLoading) return <p>Loading...</p>;
-
-  if (error instanceof Error) return <p>Error: + {error.message}</p>;
 
   if (!data) return <NotFound />;
 
@@ -169,8 +171,6 @@ export default function CollectionDetails() {
 
       {status === 'loading' ? (
         <p>Loading...</p>
-      ) : status === 'error' && err instanceof Error ? (
-        <span>Error: {err.message}</span>
       ) : (
         <section className='px-8 pt-8'>
           {items?.pages.map((page, idx) => (
