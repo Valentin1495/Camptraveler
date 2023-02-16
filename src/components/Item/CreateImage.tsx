@@ -3,6 +3,7 @@ import React, { ChangeEvent, useEffect, useRef, useState } from 'react';
 import { BsImage } from 'react-icons/bs';
 import useApiPrivate from '../../hooks/useApiPrivate';
 import { toast } from 'react-toastify';
+import { AxiosError } from 'axios';
 
 interface Item {
   itemFile: File | null;
@@ -59,8 +60,8 @@ export default function CreateImage({
     onSuccess: (data) => {
       setItemName(data.imageName);
     },
-    onError: (err) => {
-      if (err instanceof Error) {
+    onError: (err: AxiosError) => {
+      if (err.response?.status !== 403) {
         toast.error('Something went wrong: ' + err.message);
       }
     },

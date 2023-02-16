@@ -11,6 +11,7 @@ import useApiPrivate from '../../hooks/useApiPrivate';
 import { ColInfo } from '../Home/Banner';
 import SelectCollection from './SelectCollection';
 import { toast } from 'react-toastify';
+import { AxiosError } from 'axios';
 
 interface Collections {
   collections?: ColInfo[];
@@ -57,6 +58,10 @@ export default function CreateAsset({ itemFile, itemName }: Image) {
     onSuccess: (data) => {
       if (data.collections?.length) {
         setCollections(data.collections);
+      } else {
+        toast.error(
+          'Please create a collection before you create your own NFT'
+        );
       }
     },
   });
@@ -69,8 +74,8 @@ export default function CreateAsset({ itemFile, itemName }: Image) {
     onSuccess: (data) => {
       setItem(data);
     },
-    onError: (err) => {
-      if (err instanceof Error) {
+    onError: (err: AxiosError) => {
+      if (err.response?.status !== 403) {
         toast.error('Something went wrong: ' + err.message);
       }
     },

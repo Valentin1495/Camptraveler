@@ -3,6 +3,7 @@ import React, { ChangeEvent, useEffect, useRef, useState } from 'react';
 import { BsImage } from 'react-icons/bs';
 import useApiPrivate from '../../hooks/useApiPrivate';
 import { toast } from 'react-toastify';
+import { AxiosError } from 'axios';
 
 interface Banner {
   bannerFile: File | undefined;
@@ -60,8 +61,8 @@ export default function CreateBanner({
     onSuccess: (data) => {
       setBannerName(data.imageName);
     },
-    onError: (err) => {
-      if (err instanceof Error) {
+    onError: (err: AxiosError) => {
+      if (err.response?.status !== 403) {
         toast.error('Something went wrong: ' + err.message);
       }
     },

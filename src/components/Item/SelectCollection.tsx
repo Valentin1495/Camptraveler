@@ -5,7 +5,6 @@ import CollectionModal from './CollectionModal';
 
 interface Props {
   isLoading: boolean;
-
   collections: ColInfo[] | undefined;
   colSelected: ColInfo | undefined;
   setColSelected: React.Dispatch<React.SetStateAction<ColInfo | undefined>>;
@@ -13,7 +12,6 @@ interface Props {
 
 export default function SelectCollection({
   isLoading,
-
   collections,
   colSelected,
   setColSelected,
@@ -41,12 +39,13 @@ export default function SelectCollection({
           </span>
         </div>
       ) : (
-        <span
+        <button
           onClick={() => setShowModal(true)}
-          className='border-gray-300 cursor-pointer border-2 p-3 rounded-lg'
+          className='border-gray-300 cursor-pointer border-2 p-3 rounded-lg disabled:cursor-not-allowed disabled:opacity-50'
+          disabled={!collections?.length}
         >
           Select your Collection
-        </span>
+        </button>
       )}
 
       {showModal &&

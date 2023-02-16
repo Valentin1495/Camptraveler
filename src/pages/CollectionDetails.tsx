@@ -72,7 +72,10 @@ export default function CollectionDetails() {
         toast.error(
           'You cannot remove a collection until you remove all items inside of it'
         );
-      } else toast.error('Something went wrong: ' + err.message);
+      }
+      if (err.response?.status !== 403) {
+        toast.error('Something went wrong: ' + err.message);
+      }
     },
   });
 

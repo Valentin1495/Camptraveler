@@ -8,6 +8,7 @@ import { useMutation } from '@tanstack/react-query';
 import { Bc } from '../../pages/CreateCollection';
 import { toast } from 'react-toastify';
 import useApiPrivate from '../../hooks/useApiPrivate';
+import { AxiosError } from 'axios';
 
 export interface Inputs {
   name: string;
@@ -58,8 +59,8 @@ export default function CreateBio({ bc, logoName, bannerName }: ColProps) {
     mutationFn: (col: ColRequirements) =>
       apiPrivate.post('/api/collections', col).then((res) => res.data),
     onSuccess: (data) => setCollection(data),
-    onError: (err) => {
-      if (err instanceof Error) {
+    onError: (err: AxiosError) => {
+      if (err.response?.status !== 403) {
         toast.error('Something went wrong: ' + err.message);
       }
     },
