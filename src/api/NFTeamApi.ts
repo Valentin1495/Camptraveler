@@ -6,8 +6,6 @@ export const api = axios.create({
   baseURL: import.meta.env.VITE_API_URL,
 });
 
-const refreshtoken = localStorage.getItem('refreshToken');
-
 export const signup = ({ email, password, nickname }: UserInfo) =>
   api.post('/api/members', {
     email,
@@ -22,14 +20,16 @@ export const login = ({ email, password }: User) =>
   });
 
 export const logout = () => {
+  const RefreshToken = localStorage.getItem('refreshToken');
   return api.get('/auth/logout', {
-    headers: { refreshtoken },
+    headers: { RefreshToken },
   });
 };
 
 export const reissue = () => {
+  const RefreshToken = localStorage.getItem('refreshToken');
   return api.get('/auth/reissue', {
-    headers: { refreshtoken },
+    headers: { RefreshToken },
   });
 };
 

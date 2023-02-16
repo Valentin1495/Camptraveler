@@ -1,12 +1,11 @@
 import { useEffect } from 'react';
 import useRefreshToken from './useRefreshToken';
 import { api } from '../api/NFTeamApi';
-import { toast } from 'react-toastify';
 
 const useApiPrivate = () => {
-  const accessToken = localStorage.getItem('accessToken');
-
   useEffect(() => {
+    const accessToken = localStorage.getItem('accessToken');
+
     const requestIntercept = api.interceptors.request.use(
       (config) => {
         if (!config.headers['authorization']) {
@@ -26,7 +25,6 @@ const useApiPrivate = () => {
           useRefreshToken().then((newAccessToken) => {
             prevReq.headers['authorization'] = newAccessToken;
             localStorage.setItem('accessToken', newAccessToken);
-            toast.error('Please try again');
           });
 
           return api(prevReq);
@@ -39,7 +37,7 @@ const useApiPrivate = () => {
       api.interceptors.request.eject(requestIntercept);
       api.interceptors.response.eject(responseIntercept);
     };
-  }, [accessToken]);
+  }, []);
 
   return api;
 };

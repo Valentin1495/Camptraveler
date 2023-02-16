@@ -12,7 +12,7 @@ import { ColInfo } from '../Home/Banner';
 import SelectCollection from './SelectCollection';
 import { toast } from 'react-toastify';
 
-interface Profile {
+interface Collections {
   collections?: ColInfo[];
 }
 
@@ -51,7 +51,7 @@ export default function CreateAsset({ itemFile, itemName }: Image) {
 
   const id = localStorage.getItem('id');
 
-  const { isLoading: loading } = useQuery<Profile>({
+  const { isLoading: loading } = useQuery<Collections>({
     queryKey: ['members', id],
     queryFn: () => getUser(id!),
     onSuccess: (data) => {

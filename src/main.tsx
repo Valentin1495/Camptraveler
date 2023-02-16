@@ -10,6 +10,7 @@ import {
 import { BrowserRouter } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { AxiosError } from 'axios';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -19,7 +20,7 @@ const queryClient = new QueryClient({
   },
   queryCache: new QueryCache({
     onError: (err) => {
-      if (err instanceof Error) {
+      if (err instanceof AxiosError && err.response?.status !== 400) {
         toast.error('Something went wrong: ' + err.message);
       }
     },

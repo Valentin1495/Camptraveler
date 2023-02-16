@@ -1,4 +1,6 @@
+import { toast } from 'react-toastify';
 import { logout } from '../api/NFTeamApi';
+import { AxiosError } from 'axios';
 
 const useLogout = async () => {
   try {
@@ -8,7 +10,8 @@ const useLogout = async () => {
       location.replace('/signin');
     }
   } catch (error) {
-    console.error(error);
+    const err = error as AxiosError;
+    toast.error('Something went wrong ' + err.message);
   }
 };
 

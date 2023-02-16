@@ -26,6 +26,7 @@ export default function Header() {
 
   const accessToken = localStorage.getItem('accessToken');
   const profilePic = localStorage.getItem('profilePic');
+  const id = localStorage.getItem('id');
 
   return (
     <header className='h-16 z-30 bg-white sticky justify-between top-0 flex items-center sm:pr-8 pr-2.5 sm:pl-6'>
@@ -63,7 +64,7 @@ export default function Header() {
       <section className='relative mt-0.5 min-w-fit h-full'>
         {profilePic ? (
           <Link
-            to='/account'
+            to={'/account/' + id}
             className='dropdown-link h-full flex items-center'
           >
             <img

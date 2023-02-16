@@ -11,6 +11,7 @@ import MyCollections from './pages/MyCollections';
 import CreateCollection from './pages/CreateCollection';
 import CreateItem from './pages/CreateItem';
 import Account from './pages/Account';
+import EditProfile from './pages/EditProfile';
 
 function App() {
   return (
@@ -23,17 +24,16 @@ function App() {
           <Route path='*' element={<NotFound />} />
 
           <Route element={<RequireAuth />}>
-            <Route path='/collections' element={<MyCollections />} />
-            <Route path='/collection/create' element={<CreateCollection />} />
-            <Route path='/asset/create' element={<CreateItem />} />
-            <Route path='/account/:userId' element={<Account />} />
+            <Route path='collections' element={<MyCollections />} />
+            <Route path='collection/create' element={<CreateCollection />} />
+            <Route path='asset/create' element={<CreateItem />} />
+            <Route path='account/:userId' element={<Account />} />
+            <Route path='account/profile' element={<EditProfile />} />
           </Route>
         </Route>
 
         <Route path='/signup' element={<Register />} />
         <Route path='/signin' element={<Signin />} />
-
-        {/* <Route path='/account/profile' element={<EditProfile />} /> */}
       </Routes>
     </div>
   );

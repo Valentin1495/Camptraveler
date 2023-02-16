@@ -16,7 +16,7 @@
   }
 
   .auth-btn {
-    @apply w-fit mx-auto px-3 py-1.5 font-bold hover:opacity-80 text-white bg-brand-color rounded-md;
+    @apply w-fit mx-auto px-3 py-1.5 font-bold hover:bg-hovered text-white bg-brand-color rounded-md;
   }
 
   .dropdown-menu {
@@ -26,14 +26,30 @@
   .dropdown-menu:hover {
     opacity: 1;
     transform: translateY(0px);
-    pointer-events: auto;
+    pointer-events: all;
   }
 
   .dropdown-link:hover + .dropdown-menu {
     opacity: 1;
     transform: translateY(0px);
     transition: all 150ms ease-in-out;
-    pointer-events: auto;
+    pointer-events: all;
+  }
+
+  .dots-dropdown {
+    opacity: 0;
+    box-shadow: 0 0 5px 2.5px rgba(0, 0, 0, 0.1);
+    pointer-events: none;
+  }
+
+  .dots-dropdown:active {
+    pointer-events: all;
+  }
+
+  .dots:focus + .dots-dropdown {
+    opacity: 1;
+    pointer-events: all;
+    transition: opacity 150ms ease-in-out;
   }
 
   .select-menu {

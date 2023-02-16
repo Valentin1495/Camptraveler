@@ -48,7 +48,7 @@ export default function ItemCard({
             e.preventDefault();
             mutate();
           }}
-          className={`duration-300 rounded-full p-1.5 bg-black/60 hover:bg-black z-10 absolute top-2 right-2 
+          className={`duration-300 rounded-full p-1.5 bg-black/40 hover:bg-black z-10 absolute top-2 right-2 
           ${show && ownerId.toString() === id ? 'opacity-100' : 'opacity-0'} `}
         >
           <BiTrash className='h-6 w-6 text-gray-300' />

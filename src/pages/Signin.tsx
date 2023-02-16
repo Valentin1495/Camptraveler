@@ -52,7 +52,7 @@ export default function Signin() {
     onError: (error: AxiosError) => {
       if (!error.response) {
         setErrMsg('No server response');
-      } else if (error.response.status === 403) {
+      } else if (error.response.status === 401) {
         setErrMsg('Unauthorized');
       } else {
         setErrMsg('Login failed');
@@ -106,7 +106,7 @@ export default function Signin() {
         <button
           type='submit'
           disabled={isLoading}
-          className='disabled:cursor-not-allowed opacity-80 auth-btn'
+          className='disabled:cursor-not-allowed disabled:opacity-50 auth-btn'
         >
           {isLoading ? 'Loading...' : 'Sign in'}
         </button>
