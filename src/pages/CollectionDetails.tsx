@@ -16,9 +16,11 @@ import { ColProps } from '../components/Home/Gallery';
 import { toast } from 'react-toastify';
 import { BiTrash } from 'react-icons/bi';
 import useApiPrivate from '../hooks/useApiPrivate';
+import { AxiosError } from 'axios';
 
 export interface Item {
   itemId?: number;
+  ownerId: number;
   itemImageName: string;
   itemName: string;
   itemPrice: number;
@@ -63,12 +65,14 @@ export default function CollectionDetails() {
     onSuccess: () => {
       queryClient.invalidateQueries(['members', myId, 'cols']);
       navigate('/collections');
-      toast.success('Your collection has been successfully removed');
+      toast.success('Your collection has been removed');
     },
-    onError: (err) => {
-      if (err instanceof Error) {
-        toast.error('Something went wrong: ' + err.message);
-      }
+    onError: (err: AxiosError) => {
+      if (err.response?.status === 500) {
+        toast.error(
+          'You cannot remove a collection until you remove all items inside of it'
+        );
+      } else toast.error('Something went wrong: ' + err.message);
     },
   });
 
@@ -181,6 +185,8 @@ export default function CollectionDetails() {
               {page.data.map((item: Item) => (
                 <ItemCard
                   key={item.itemId}
+                  itemId={item.itemId}
+                  ownerId={item.ownerId}
                   itemImageName={item.itemImageName}
                   itemName={item.itemName}
                   itemPrice={item.itemPrice}

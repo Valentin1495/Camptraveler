@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import useRefreshToken from './useRefreshToken';
 import { api } from '../api/NFTeamApi';
+import { toast } from 'react-toastify';
 
 const useApiPrivate = () => {
   const accessToken = localStorage.getItem('accessToken');
@@ -25,6 +26,7 @@ const useApiPrivate = () => {
           useRefreshToken().then((newAccessToken) => {
             prevReq.headers['authorization'] = newAccessToken;
             localStorage.setItem('accessToken', newAccessToken);
+            toast.error('Please try again');
           });
 
           return api(prevReq);

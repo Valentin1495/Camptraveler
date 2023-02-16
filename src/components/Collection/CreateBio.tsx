@@ -80,7 +80,7 @@ export default function CreateBio({ bc, logoName, bannerName }: ColProps) {
   useEffect(() => {
     if (collection) {
       navigate(`/collection/${collection.id}`);
-      toast.success('Your collection has been successfully created!');
+      toast.success('Your collection has been created!');
     }
   }, [collection, navigate]);
 

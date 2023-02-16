@@ -89,8 +89,8 @@ export default function CreateAsset({ itemFile, itemName }: Image) {
 
   useEffect(() => {
     if (item) {
-      navigate(`/item/${item.id}`);
-      toast.success('Your item has been successfully created!');
+      navigate(`/collection/${colSelected?.collectionId}`);
+      toast.success('Your item has been created!');
     }
   }, [item, navigate]);
 

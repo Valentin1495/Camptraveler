@@ -1,7 +1,6 @@
 import { useMutation } from '@tanstack/react-query';
 import { ChangeEvent, useEffect, useRef, useState } from 'react';
 import { BsImage } from 'react-icons/bs';
-
 import useApiPrivate from '../../hooks/useApiPrivate';
 import { toast } from 'react-toastify';
 
