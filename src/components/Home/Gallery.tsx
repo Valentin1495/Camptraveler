@@ -26,7 +26,7 @@ export default function Gallery() {
   }, [inView]);
 
   return (
-    <div className='p-[2rem] mt-[2rem] space-y-5'>
+    <div className='mt-[2rem] space-y-5'>
       {status === 'loading' ? (
         <p>Loading...</p>
       ) : (

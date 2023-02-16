@@ -10,6 +10,7 @@ import RequireAuth from './components/RequireAuth';
 import MyCollections from './pages/MyCollections';
 import CreateCollection from './pages/CreateCollection';
 import CreateItem from './pages/CreateItem';
+import Account from './pages/Account';
 
 function App() {
   return (
@@ -17,7 +18,7 @@ function App() {
       <Routes>
         <Route path='/' element={<Layout />}>
           <Route index element={<Home />} />
-          <Route path='collection/:id' element={<CollectionDetails />} />
+          <Route path='collection/:colId' element={<CollectionDetails />} />
           <Route path='search' element={<Search />} />
           <Route path='*' element={<NotFound />} />
 
@@ -25,14 +26,13 @@ function App() {
             <Route path='/collections' element={<MyCollections />} />
             <Route path='/collection/create' element={<CreateCollection />} />
             <Route path='/asset/create' element={<CreateItem />} />
+            <Route path='/account/:userId' element={<Account />} />
           </Route>
         </Route>
 
         <Route path='/signup' element={<Register />} />
         <Route path='/signin' element={<Signin />} />
 
-        {/* <Route path='/account/:memberId' element={<Account />} /> */}
-        {/* <Route path='asset/create' element={<CreateItem />} /> */}
         {/* <Route path='/account/profile' element={<EditProfile />} /> */}
       </Routes>
     </div>

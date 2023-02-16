@@ -47,12 +47,12 @@ export interface Collection extends ColProps {
 }
 
 export default function CollectionDetails() {
-  const { id } = useParams();
+  const { colId } = useParams();
   const { ref, inView } = useInView();
 
   const { isLoading, data } = useQuery<Collection>({
     queryKey: ['onlyCollection'],
-    queryFn: () => getCollection(id!),
+    queryFn: () => getCollection(colId!),
   });
   const myId = localStorage.getItem('id');
 
@@ -61,7 +61,7 @@ export default function CollectionDetails() {
   const navigate = useNavigate();
 
   const { mutate } = useMutation({
-    mutationFn: () => apiPrivate.delete('/api/collections/' + id),
+    mutationFn: () => apiPrivate.delete('/api/collections/' + colId),
     onSuccess: () => {
       queryClient.invalidateQueries(['members', myId, 'cols']);
       navigate('/collections');
@@ -83,7 +83,7 @@ export default function CollectionDetails() {
     status,
   } = useInfiniteQuery({
     queryKey: ['itemsPerPage'],
-    queryFn: ({ pageParam = 1 }) => getItemsPerPage(id!, pageParam),
+    queryFn: ({ pageParam = 1 }) => getItemsPerPage(colId!, pageParam),
     getNextPageParam: (lastPage, pages) =>
       lastPage.hasNext ? pages.length + 1 : undefined,
   });

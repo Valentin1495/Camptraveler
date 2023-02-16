@@ -6,7 +6,6 @@ export const api = axios.create({
   baseURL: import.meta.env.VITE_API_URL,
 });
 
-const accessToken = localStorage.getItem('accessToken');
 const refreshtoken = localStorage.getItem('refreshToken');
 
 export const signup = ({ email, password, nickname }: UserInfo) =>
