@@ -3,7 +3,6 @@ import { ColInfo } from '../Home/Banner';
 
 interface ModalProps {
   isLoading: boolean;
-
   collections: ColInfo[] | undefined;
   setColSelected: React.Dispatch<React.SetStateAction<ColInfo | undefined>>;
   setShowModal: React.Dispatch<React.SetStateAction<boolean>>;
@@ -11,7 +10,6 @@ interface ModalProps {
 
 export default function CollectionModal({
   isLoading,
-
   collections,
   setColSelected,
   setShowModal,

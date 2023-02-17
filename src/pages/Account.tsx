@@ -1,14 +1,12 @@
 import { Link, useParams } from 'react-router-dom';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import NotFound from './NotFound';
 import { getUser } from '../api/NFTeamApi';
 import { Item } from './CollectionDetails';
 import { useState } from 'react';
 import ItemCard from '../components/ItemCard';
 import { BiDotsVerticalRounded } from 'react-icons/bi';
-import useApiPrivate from '../hooks/useApiPrivate';
-import { AxiosError } from 'axios';
-import { toast } from 'react-toastify';
+import AlertModal from '../components/Profile/AlertModal';
 
 export interface Member {
   memberId: number;
@@ -28,6 +26,7 @@ export default function Account() {
   const myId = localStorage.getItem('id');
   const [items, setItems] = useState<Item[] | undefined>();
   const [user, setUser] = useState<Member | undefined>();
+  const [showModal, setShowModal] = useState(false);
 
   const { isLoading, data } = useQuery<Profile>({
     queryKey: ['members', userId],
@@ -36,23 +35,6 @@ export default function Account() {
       setUser(data.member);
       if (data.items?.length) {
         setItems(data.items);
-      }
-    },
-  });
-
-  const queryClient = useQueryClient();
-  const apiPrivate = useApiPrivate();
-
-  const { mutate } = useMutation({
-    mutationFn: () => apiPrivate.delete(`api/members/${userId}`),
-    onSuccess: () => {
-      queryClient.invalidateQueries(['members', userId]);
-      window.localStorage.clear();
-      window.location.replace('/');
-    },
-    onError: (err: AxiosError) => {
-      if (err.response?.status !== 403) {
-        toast.error('Something went wrong: ' + err.message);
       }
     },
   });
@@ -93,19 +75,28 @@ export default function Account() {
           <div className='dots-dropdown flex flex-col w-32 absolute top-6 right-3 bg-white rounded-md'>
             <Link
               to={'/account/profile'}
-              className='hover:bg-gray-200 p-2 dots-link cursor-pointer'
+              className='hover:bg-gray-200 text-center py-2 cursor-pointer'
             >
               Edit profile
             </Link>
-            <button
-              onClick={() => mutate()}
-              className='hover:bg-gray-200 p-2 cursor-pointer'
+            <div
+              onClick={() => {
+                setShowModal(true);
+                console.log('clicked');
+              }}
+              className='hover:bg-gray-200 text-center py-2 cursor-pointer'
             >
-              Remove profile
-            </button>
+              Delete profile
+            </div>
           </div>
         </article>
       </section>
+
+      <AlertModal
+        userId={userId}
+        showModal={showModal}
+        setShowModal={setShowModal}
+      />
 
       <section className='grid mb-5 grid-cols-1 md:grid-cols-3 gap-5 xl:grid-cols-5 p-8'>
         {items?.map((item) => (

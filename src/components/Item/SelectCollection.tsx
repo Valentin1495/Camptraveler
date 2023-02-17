@@ -34,7 +34,7 @@ export default function SelectCollection({
             alt='Collection logo'
             className='h-8 w-8 object-cover rounded-full'
           />{' '}
-          <span onClick={() => setShowModal(true)} className=' '>
+          <span onClick={() => setShowModal(true)}>
             {colSelected?.collectionName}
           </span>
         </div>
@@ -54,7 +54,7 @@ export default function SelectCollection({
             isLoading={isLoading}
             collections={collections}
             setColSelected={setColSelected}
-            setShowModal={() => setShowModal(false)}
+            setShowModal={setShowModal}
           />,
           document.body
         )}
