@@ -25,7 +25,7 @@ const useApiPrivate = () => {
           useRefreshToken().then((newAccessToken) => {
             prevReq.headers['authorization'] = newAccessToken;
             localStorage.setItem('accessToken', newAccessToken);
-            // window.location.reload();
+            window.location.reload();
           });
 
           return api(prevReq);
