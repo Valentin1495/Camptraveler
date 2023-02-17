@@ -4,6 +4,7 @@ import { useInView } from 'react-intersection-observer';
 import { useEffect } from 'react';
 import ColCard from '../ColCard';
 import { getHomeCol } from '../../api/NFTeamApi';
+import GallerySkeleton from '../Skeleton/GallerySkeleton';
 
 export interface ColProps extends ColInfo {
   description: string;
@@ -28,11 +29,15 @@ export default function Gallery() {
   return (
     <div className='mt-[2rem] space-y-5'>
       {status === 'loading' ? (
-        <p>Loading...</p>
+        <section className='grid mb-5 grid-cols-1 sm:grid-cols-3 gap-5 xl:grid-cols-5'>
+          {[...Array(15).keys()].map((i) => (
+            <GallerySkeleton key={i} />
+          ))}
+        </section>
       ) : (
         <div>
           {data?.pages.map((page, idx) => (
-            <div
+            <section
               className='grid mb-5 grid-cols-1 sm:grid-cols-3 gap-5 xl:grid-cols-5'
               key={idx}
             >
@@ -45,13 +50,19 @@ export default function Gallery() {
                   description={col.description}
                 />
               ))}
-            </div>
+            </section>
           ))}
         </div>
       )}
-      <p className='inline-block' ref={ref}>
-        {isFetchingNextPage && 'Loading more...'}
-      </p>
+      <div className='inline-block' ref={ref}>
+        {isFetchingNextPage && (
+          <section className='grid mb-5 grid-cols-1 sm:grid-cols-3 gap-5 xl:grid-cols-5'>
+            {[...Array(15).keys()].map((i) => (
+              <GallerySkeleton key={i} />
+            ))}
+          </section>
+        )}
+      </div>
     </div>
   );
 }

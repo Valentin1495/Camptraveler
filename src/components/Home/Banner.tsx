@@ -1,8 +1,8 @@
-import axios from 'axios';
 import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
 import BannerCol from './BannerCol';
 import { getHomeCol } from '../../api/NFTeamApi';
+import BannerSkeleton from '../Skeleton/BannerSkeleton';
 
 export interface ColInfo {
   collectionId: number | undefined;
@@ -19,7 +19,7 @@ export default function Banner() {
       setBanner(data[Math.floor(Math.random() * data.length)]),
   });
 
-  if (isLoading) return <p>Loading...</p>;
+  if (isLoading) return <BannerSkeleton />;
 
   return (
     <div className='overflow-hidden w-full h-[500px]'>

@@ -176,17 +176,9 @@ export default function CreateAsset({ itemFile, itemName }: Image) {
       <input
         type='submit'
         className='bg-brand-color disabled:cursor-not-allowed disabled:opacity-50 hover:bg-hovered cursor-pointer font-bold text-white rounded-lg px-5 py-3 text-lg'
-        value='Create'
-        disabled={!itemFile || !colSelected}
+        value={isLoading ? ' Creating an item...' : 'Create'}
+        disabled={!itemFile || !colSelected || isLoading}
       />
-      {isLoading && (
-        <h5
-          className='
-        font-bold text-gray-500'
-        >
-          Creating an item...
-        </h5>
-      )}
     </form>
   );
 }

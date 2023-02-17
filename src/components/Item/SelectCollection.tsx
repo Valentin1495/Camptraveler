@@ -44,7 +44,7 @@ export default function SelectCollection({
           className='border-gray-300 cursor-pointer border-2 p-3 rounded-lg disabled:cursor-not-allowed disabled:opacity-50'
           disabled={!collections?.length}
         >
-          Select your Collection
+          Select one of your collections...
         </button>
       )}
 
