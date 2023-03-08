@@ -1,23 +1,30 @@
 import { useInfiniteQuery } from '@tanstack/react-query';
-import { ColInfo } from './Banner';
 import { useInView } from 'react-intersection-observer';
 import { useEffect } from 'react';
 import ColCard from '../ColCard';
-import { getHomeCol } from '../../api/NFTeamApi';
+import { getHomeCols } from '../../api/NFTeamApi';
 import GallerySkeleton from '../Skeleton/GallerySkeleton';
+import Loader from '../Loader';
 
-export interface ColProps extends ColInfo {
+interface Url {
+  raw: string;
+}
+
+export interface ColInfo {
+  id?: string;
+  color: string;
   description: string;
+  urls: Url;
+  alt_description: string;
 }
 
 export default function Gallery() {
   const { ref, inView } = useInView();
 
   const { data, fetchNextPage, isFetchingNextPage, status } = useInfiniteQuery({
-    queryKey: ['mainCollections'],
-    queryFn: ({ pageParam = 1 }) => getHomeCol(pageParam, 15),
-    getNextPageParam: (lastPage, pages) =>
-      lastPage.length ? pages.length + 1 : undefined,
+    queryKey: ['homeCols'],
+    queryFn: ({ pageParam = 1 }) => getHomeCols(pageParam, 15),
+    getNextPageParam: (lastPage, pages) => console.log(lastPage, pages),
   });
 
   useEffect(() => {
@@ -25,9 +32,8 @@ export default function Gallery() {
       fetchNextPage();
     }
   }, [inView]);
-
   return (
-    <div className='mt-[2rem] space-y-5'>
+    <div>
       {status === 'loading' ? (
         <section className='grid mb-5 grid-cols-1 sm:grid-cols-3 gap-5 xl:grid-cols-5'>
           {[...Array(15).keys()].map((i) => (
@@ -41,27 +47,15 @@ export default function Gallery() {
               className='grid mb-5 grid-cols-1 sm:grid-cols-3 gap-5 xl:grid-cols-5'
               key={idx}
             >
-              {page.map((col: ColProps) => (
-                <ColCard
-                  key={col.collectionId}
-                  collectionId={col.collectionId}
-                  collectionName={col.collectionName}
-                  logoImgName={col.logoImgName}
-                  description={col.description}
-                />
+              {page.map((col: ColInfo) => (
+                <ColCard key={col.id} {...col} />
               ))}
             </section>
           ))}
         </div>
       )}
-      <div className='inline-block' ref={ref}>
-        {isFetchingNextPage && (
-          <section className='grid mb-5 grid-cols-1 sm:grid-cols-3 gap-5 xl:grid-cols-5'>
-            {[...Array(15).keys()].map((i) => (
-              <GallerySkeleton key={i} />
-            ))}
-          </section>
-        )}
+      <div className='flex justify-center' ref={ref}>
+        {isFetchingNextPage && <Loader />}
       </div>
     </div>
   );

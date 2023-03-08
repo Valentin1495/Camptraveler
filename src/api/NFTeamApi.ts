@@ -42,9 +42,23 @@ export const getUserCols = (id: string) =>
 export const getCollection = (id: string) =>
   api.get(`/api/collections/only/${id}`).then((res) => res.data);
 
-export const getHomeCol = (page: number, size: number) =>
-  api
-    .get(`/api/collections/main?page=${page}&size=${size}`)
+export const getHomeAssets = (limit: number) =>
+  axios
+    .get('https://opensea13.p.rapidapi.com/assets?limit=' + limit, {
+      headers: {
+        'X-RapidAPI-Key': import.meta.env.VITE_X_RapidAPI_Key,
+        'X-RapidAPI-Host': 'opensea13.p.rapidapi.com',
+      },
+    })
+    .then((res) => res.data.assets);
+
+export const getHomeCols = (page: number, per_page: number) =>
+  axios
+    .get(
+      `https://api.unsplash.com/photos?client_id=${
+        import.meta.env.VITE_CLIENT_ID
+      }&page=${page}&per_page=${per_page}`
+    )
     .then((res) => res.data);
 
 export const getItemsPerPage = (id: string, page: number) =>

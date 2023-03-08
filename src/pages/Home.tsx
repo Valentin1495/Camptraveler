@@ -4,7 +4,7 @@ import Gallery from '../components/Home/Gallery';
 export default function Home() {
   return (
     <div className='p-8'>
-      <Banner />
+      {/* <Banner /> */}
       <Gallery />
     </div>
   );
