@@ -52,12 +52,12 @@ export const getHomeAssets = (limit: number) =>
     })
     .then((res) => res.data.assets);
 
-export const getHomeCols = (page: number, per_page: number) =>
+export const getMovies = (page: number) =>
   axios
     .get(
-      `https://api.unsplash.com/photos?client_id=${
-        import.meta.env.VITE_CLIENT_ID
-      }&page=${page}&per_page=${per_page}`
+      `https://api.themoviedb.org/3/movie/upcoming?api_key=${
+        import.meta.env.VITE_API_KEY
+      }&page=${page}`
     )
     .then((res) => res.data);
 

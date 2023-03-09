@@ -12,7 +12,7 @@ import { useInView } from 'react-intersection-observer';
 import NotFound from './NotFound';
 import { getCollection, getItemsPerPage } from '../api/NFTeamApi';
 import ItemCard from '../components/ItemCard';
-import { ColProps } from '../components/Home/Gallery';
+
 import { toast } from 'react-toastify';
 import { BiTrash } from 'react-icons/bi';
 import useApiPrivate from '../hooks/useApiPrivate';
@@ -29,7 +29,8 @@ export interface Item {
   collectionName: string;
 }
 
-export interface Collection extends ColProps {
+export interface Collection {
+  logoImgName: string | undefined;
   bannerImgName: string;
   coinId: number;
   coinName: string;

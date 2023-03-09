@@ -1,30 +1,26 @@
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { useInView } from 'react-intersection-observer';
 import { useEffect } from 'react';
-import ColCard from '../ColCard';
-import { getHomeCols } from '../../api/NFTeamApi';
+import MovieCard from '../MovieCard';
+import { getMovies } from '../../api/NFTeamApi';
 import GallerySkeleton from '../Skeleton/GallerySkeleton';
 import Loader from '../Loader';
 
-interface Url {
-  raw: string;
-}
-
-export interface ColInfo {
-  id?: string;
-  color: string;
-  description: string;
-  urls: Url;
-  alt_description: string;
+export interface MovieInfo {
+  id?: number;
+  backdrop_path: string;
+  poster_path: string;
+  title: string;
 }
 
 export default function Gallery() {
   const { ref, inView } = useInView();
 
   const { data, fetchNextPage, isFetchingNextPage, status } = useInfiniteQuery({
-    queryKey: ['homeCols'],
-    queryFn: ({ pageParam = 1 }) => getHomeCols(pageParam, 15),
-    getNextPageParam: (lastPage, pages) => console.log(lastPage, pages),
+    queryKey: ['upcomingMovies'],
+    queryFn: ({ pageParam = 1 }) => getMovies(pageParam),
+    getNextPageParam: (_lastPage, pages) =>
+      pages.length <= 23 ? pages.length + 1 : undefined,
   });
 
   useEffect(() => {
@@ -32,11 +28,12 @@ export default function Gallery() {
       fetchNextPage();
     }
   }, [inView]);
+  console.log(data);
   return (
     <div>
       {status === 'loading' ? (
-        <section className='grid mb-5 grid-cols-1 sm:grid-cols-3 gap-5 xl:grid-cols-5'>
-          {[...Array(15).keys()].map((i) => (
+        <section className='grid mb-5 grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-5 xl:grid-cols-5'>
+          {[...Array(20).keys()].map((i) => (
             <GallerySkeleton key={i} />
           ))}
         </section>
@@ -44,11 +41,11 @@ export default function Gallery() {
         <div>
           {data?.pages.map((page, idx) => (
             <section
-              className='grid mb-5 grid-cols-1 sm:grid-cols-3 gap-5 xl:grid-cols-5'
+              className='grid mb-5 grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-5 xl:grid-cols-5'
               key={idx}
             >
-              {page.map((col: ColInfo) => (
-                <ColCard key={col.id} {...col} />
+              {page.results.map((movie: MovieInfo) => (
+                <MovieCard key={movie.id} {...movie} />
               ))}
             </section>
           ))}
