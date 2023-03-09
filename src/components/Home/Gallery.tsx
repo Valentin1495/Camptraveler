@@ -28,7 +28,7 @@ export default function Gallery() {
       fetchNextPage();
     }
   }, [inView]);
-  console.log(data);
+
   return (
     <div>
       {status === 'loading' ? (
