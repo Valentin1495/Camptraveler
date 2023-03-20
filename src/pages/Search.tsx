@@ -6,13 +6,15 @@ import ColResults from '../components/Search/ColResults';
 import { Item } from './CollectionDetails';
 import ItemCard from '../components/ItemCard';
 import { search } from '../api/NFTeamApi';
+import Loader from '../components/Loader';
+import GallerySkeleton from '../components/Skeleton/GallerySkeleton';
 
 export default function Search() {
   const [searchParams] = useSearchParams();
   const query = searchParams.get('q');
 
   const { status, data, isFetchingNextPage, fetchNextPage } = useInfiniteQuery({
-    queryKey: ['search'],
+    queryKey: ['searchResults'],
     queryFn: ({ pageParam = 1 }) => search(query!, pageParam),
     getNextPageParam: (lastPage, allPages) =>
       lastPage.items.hasNext ? allPages.length + 1 : undefined,
@@ -27,9 +29,11 @@ export default function Search() {
   }, [inView, fetchNextPage]);
 
   return status === 'loading' ? (
-    <>
-      <p>Loading...</p>
-    </>
+    <section className='grid mb-5 grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-5 xl:grid-cols-5'>
+      {[...Array(20).keys()].map((i) => (
+        <GallerySkeleton key={i} />
+      ))}
+    </section>
   ) : (
     <div className='p-8'>
       <em className='text-lg'>Results for {query}</em>
@@ -44,23 +48,14 @@ export default function Search() {
             className='py-1.5 grid grid-cols-1 gap-3 md:grid-cols-3 xl:grid-cols-5'
           >
             {page.items.data.map((item: Item) => (
-              <ItemCard
-                key={item.itemId}
-                itemImageName={item.itemImageName}
-                itemName={item.itemName}
-                itemPrice={item.itemPrice}
-                itemId={item.itemId}
-                coinName={item.coinName}
-                coinImage={item.coinImage}
-                collectionName={item.collectionName}
-              />
+              <ItemCard key={item.itemId} {...item} />
             ))}
           </section>
         ))
       )}
-      <p className='inline-block' ref={ref}>
-        {isFetchingNextPage && 'Loading more...'}
-      </p>
+      <div className='flex justify-center' ref={ref}>
+        {isFetchingNextPage && <Loader />}
+      </div>
     </div>
   );
 }

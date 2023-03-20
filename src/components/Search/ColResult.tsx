@@ -1,8 +1,10 @@
 import { Link } from 'react-router-dom';
-import { ColInfo } from '../Home/Banner';
 
-export interface Result extends ColInfo {
+export interface Result {
   bannerImgName: string;
+  collectionId: number;
+  logoImgName: string;
+  collectionName: string;
 }
 
 export default function ColResult({
