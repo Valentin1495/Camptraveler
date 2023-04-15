@@ -1,17 +1,27 @@
 import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
-import { getUser } from '../api/NFTeamApi';
-import { Member } from './Account';
+import { getMyPage, getUser } from '../api/NFTeamApi';
+import { Member, Profile } from './Account';
 import ProfileLogo from '../components/Profile/ProfileLogo';
 import ProfileBanner from '../components/Profile/ProfileBanner';
 import ProfileBio from '../components/Profile/ProfileBio';
+import useApiPrivate from '../hooks/useApiPrivate';
 
 interface Users {
   member: Member;
 }
 
 export default function EditProfile() {
-  const id = localStorage.getItem('id');
+  const apiPrivate = useApiPrivate();
+  const accessToken = localStorage.getItem('accessToken');
+
+  const { data: myProfile } = useQuery<Profile>({
+    queryKey: ['myPage'],
+    queryFn: () => getMyPage(apiPrivate, accessToken),
+    enabled: !!accessToken,
+  });
+
+  const myId = myProfile?.member.memberId;
 
   const [profileLogo, setProfileLogo] = useState<string>('');
   const [profileBanner, setProfileBanner] = useState<string>('');
@@ -21,8 +31,9 @@ export default function EditProfile() {
   const [bannerName, setBannerName] = useState<string>('');
 
   const { isLoading, data } = useQuery<Users>({
-    queryKey: ['members', id],
-    queryFn: () => getUser(id!),
+    queryKey: ['members', myId],
+    queryFn: () => getUser(myId?.toString()!),
+    enabled: !!myId,
     onSuccess: (data) => {
       setProfileLogo(data.member.profileImageName);
       setProfileBanner(data.member.bannerImageName);

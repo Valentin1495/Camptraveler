@@ -1,38 +1,34 @@
 import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
 import BannerAsset from './BannerAsset';
-import { getHomeAssets } from '../../api/NFTeamApi';
+import { getRandomPhotos } from '../../api/NFTeamApi';
 import BannerSkeleton from '../Skeleton/BannerSkeleton';
-import { toast } from 'react-toastify';
 
-export interface Asset {
-  id?: number;
-  image_url: string | null;
-  name: string;
-  permalink: string;
+interface Urls {
+  regular: string;
+}
+
+export interface Photo {
+  id?: string;
+  urls: Urls;
 }
 
 export default function Banner() {
-  const [banner, setBanner] = useState<Asset>();
+  const [banner, setBanner] = useState<Photo>();
 
-  const { isLoading } = useQuery<Asset[]>({
-    queryKey: ['openseaAssets'],
-    queryFn: () => getHomeAssets(50),
+  useQuery<Photo[]>({
+    queryKey: ['photos'],
+    queryFn: () => getRandomPhotos(20),
     onSuccess: (data) =>
       setBanner(data[Math.floor(Math.random() * data.length)]),
-    onError: (error) => {
-      if (error instanceof Error) {
-        toast.error('Something went wrong: ' + error.message);
-      }
-    },
   });
-
-  if (isLoading) return <BannerSkeleton />;
 
   if (banner)
     return (
-      <div className='overflow-hidden w-full h-[500px]'>
+      <div className='rounded-md overflow-hidden w-full h-[450px] md:h-[550px]'>
         <BannerAsset key={banner.id} {...banner} />
       </div>
     );
+
+  return <BannerSkeleton />;
 }

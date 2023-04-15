@@ -1,14 +1,26 @@
 import { useQuery } from '@tanstack/react-query';
-import { getUserCols } from '../api/NFTeamApi';
+import { getMyPage, getUserCols } from '../api/NFTeamApi';
 import { Link } from 'react-router-dom';
 import ColResult, { Result } from '../components/Search/ColResult';
+import useApiPrivate from '../hooks/useApiPrivate';
+import { Profile } from './Account';
 
 export default function MyCollections() {
-  const id = localStorage.getItem('id');
+  const apiPrivate = useApiPrivate();
+  const accessToken = localStorage.getItem('accessToken');
+
+  const { data: myProfile } = useQuery<Profile>({
+    queryKey: ['myPage'],
+    queryFn: () => getMyPage(apiPrivate, accessToken),
+    enabled: !!accessToken,
+  });
+
+  const myId = myProfile?.member.memberId;
 
   const { isLoading, data } = useQuery<Result[]>({
-    queryKey: ['members', id, 'cols'],
-    queryFn: () => getUserCols(id!),
+    queryKey: ['members', myId, 'cols'],
+    queryFn: () => getUserCols(myId?.toString()!),
+    enabled: !!myId,
   });
 
   if (isLoading) return <p>Loading...</p>;

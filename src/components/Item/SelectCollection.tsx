@@ -1,7 +1,7 @@
 import { useState } from 'react';
-import { ColInfo } from '../Home/Banner';
 import { createPortal } from 'react-dom';
 import CollectionModal from './CollectionModal';
+import { ColInfo } from './CreateAsset';
 
 interface Props {
   isLoading: boolean;

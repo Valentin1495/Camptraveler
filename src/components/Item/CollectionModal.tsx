@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { ColInfo } from '../Home/Banner';
+import { ColInfo } from './CreateAsset';
 
 interface ModalProps {
   isLoading: boolean;

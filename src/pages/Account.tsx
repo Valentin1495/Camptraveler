@@ -1,12 +1,13 @@
 import { Link, useParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import NotFound from './NotFound';
-import { getUser } from '../api/NFTeamApi';
+import { getMyPage, getUser } from '../api/NFTeamApi';
 import { Item } from './CollectionDetails';
 import { useState } from 'react';
 import ItemCard from '../components/ItemCard';
 import { BiDotsVerticalRounded } from 'react-icons/bi';
 import AlertModal from '../components/Profile/AlertModal';
+import useApiPrivate from '../hooks/useApiPrivate';
 
 export interface Member {
   memberId: number;
@@ -16,17 +17,27 @@ export interface Member {
   description: string;
 }
 
-interface Profile {
+export interface Profile {
   member: Member;
   items: Item[];
 }
 
 export default function Account() {
   const { userId } = useParams();
-  const myId = localStorage.getItem('id');
   const [items, setItems] = useState<Item[] | undefined>();
   const [user, setUser] = useState<Member | undefined>();
   const [showModal, setShowModal] = useState(false);
+
+  const apiPrivate = useApiPrivate();
+  const accessToken = localStorage.getItem('accessToken');
+
+  const { data: myProfile } = useQuery<Profile>({
+    queryKey: ['myPage'],
+    queryFn: () => getMyPage(apiPrivate, accessToken),
+    enabled: !!accessToken,
+  });
+
+  const myId = myProfile?.member.memberId.toString();
 
   const { isLoading, data } = useQuery<Profile>({
     queryKey: ['members', userId],

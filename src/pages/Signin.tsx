@@ -7,6 +7,8 @@ import { AxiosError } from 'axios';
 import { useEffect, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { UserInfo } from './Register';
+// import { useSetRecoilState } from 'recoil';
+// import { profileState } from '../atoms/profileAtom';
 
 export type User = Omit<UserInfo, 'nickname'>;
 
@@ -35,6 +37,7 @@ export default function Signin() {
   const location = useLocation();
   const navigate = useNavigate();
   const [errMsg, setErrMsg] = useState<string>('');
+  // const setProfile = useSetRecoilState(profileState);
   const from = location.state?.from?.pathname || '/';
 
   const queryClient = new QueryClient();
@@ -43,8 +46,7 @@ export default function Signin() {
     mutationFn: (user: User) => login(user),
     onSuccess: (res) => {
       queryClient.invalidateQueries({ queryKey: ['users'] });
-      localStorage.setItem('id', res.data.id);
-      localStorage.setItem('profilePic', res.data.profileImageName);
+      // setProfile({ id: res.data.id, profilePic: res.data.profileImageName });
       localStorage.setItem('accessToken', res.headers.authorization);
       localStorage.setItem('refreshToken', res.headers.refreshtoken);
       navigate(from, { replace: true });

@@ -6,6 +6,11 @@ import { HiArrowRightOnRectangle } from 'react-icons/hi2';
 import { HiArrowLeftOnRectangle } from 'react-icons/hi2';
 import { FormEvent, useState } from 'react';
 import useLogout from '../../hooks/useLogout';
+import { useQuery } from '@tanstack/react-query';
+import useApiPrivate from '../../hooks/useApiPrivate';
+import { Profile } from '../../pages/Account';
+import { getMyPage } from '../../api/NFTeamApi';
+import ProfilePicSkeleton from '../Skeleton/ProfilePicSkeleton';
 
 export default function Header() {
   const [searchValue, setSearchValue] = useState<string>('');
@@ -25,8 +30,16 @@ export default function Header() {
   };
 
   const accessToken = localStorage.getItem('accessToken');
-  const profilePic = localStorage.getItem('profilePic');
-  const id = localStorage.getItem('id');
+  const apiPrivate = useApiPrivate();
+
+  const { isLoading, data } = useQuery<Profile>({
+    queryKey: ['myPage'],
+    queryFn: () => getMyPage(apiPrivate, accessToken),
+    enabled: !!accessToken,
+  });
+
+  const myId = data?.member.memberId;
+  const myProfilePic = data?.member.profileImageName;
 
   return (
     <header className='h-16 z-30 bg-white sticky justify-between top-0 flex items-center sm:pr-8 pr-2.5 sm:pl-6'>
@@ -62,17 +75,21 @@ export default function Header() {
         <h1 className='hidden lg:block'>Create</h1>
       </Link>
       <section className='relative mt-0.5 min-w-fit h-full'>
-        {profilePic ? (
-          <Link
-            to={'/account/' + id}
-            className='dropdown-link h-full flex items-center'
-          >
-            <img
-              src={profilePic}
-              alt='Profile picture'
-              className='w-8 h-8 rounded-full object-cover'
-            />
-          </Link>
+        {accessToken ? (
+          isLoading ? (
+            <ProfilePicSkeleton />
+          ) : (
+            <Link
+              to={'/account/' + myId}
+              className='dropdown-link h-full flex items-center'
+            >
+              <img
+                src={myProfilePic}
+                alt='Profile picture'
+                className='w-8 h-8 rounded-full object-cover'
+              />
+            </Link>
+          )
         ) : (
           <Link to='/signin' className='dropdown-link h-full flex items-center'>
             <BiUserCircle className='h-8 w-8' />

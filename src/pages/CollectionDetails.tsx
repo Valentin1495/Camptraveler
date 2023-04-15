@@ -10,13 +10,13 @@ import {
 } from '@tanstack/react-query';
 import { useInView } from 'react-intersection-observer';
 import NotFound from './NotFound';
-import { getCollection, getItemsPerPage } from '../api/NFTeamApi';
+import { getCollection, getItemsPerPage, getMyPage } from '../api/NFTeamApi';
 import ItemCard from '../components/ItemCard';
-
 import { toast } from 'react-toastify';
 import { BiTrash } from 'react-icons/bi';
 import useApiPrivate from '../hooks/useApiPrivate';
 import { AxiosError } from 'axios';
+import { Profile } from './Account';
 
 export interface Item {
   itemId?: number;
@@ -51,14 +51,24 @@ export default function CollectionDetails() {
   const { colId } = useParams();
   const { ref, inView } = useInView();
 
+  const apiPrivate = useApiPrivate();
+  const accessToken = localStorage.getItem('accessToken');
+
+  const { data: myProfile } = useQuery<Profile>({
+    queryKey: ['myPage'],
+    queryFn: () => getMyPage(apiPrivate, accessToken),
+    enabled: !!accessToken,
+  });
+
+  const myId = myProfile?.member.memberId;
+
   const { isLoading, data } = useQuery<Collection>({
     queryKey: ['onlyCollection'],
     queryFn: () => getCollection(colId!),
   });
-  const myId = localStorage.getItem('id');
 
   const queryClient = useQueryClient();
-  const apiPrivate = useApiPrivate();
+
   const navigate = useNavigate();
 
   const { mutate } = useMutation({
@@ -122,7 +132,7 @@ export default function CollectionDetails() {
         <div className='flex justify-between items-center'>
           <h1 className='text-4xl font-bold'>{data?.collectionName}</h1>
           <div className='space-x-3 flex'>
-            {data?.ownerId.toString() === myId && (
+            {data?.ownerId.toString() === myId?.toString() && (
               <button onClick={() => mutate()} className='shadowBtn'>
                 <BiTrash className='h-6 w-6' />
               </button>

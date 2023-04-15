@@ -6,12 +6,19 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { Inputs, SuccessRes } from '../Collection/CreateBio';
-import { getUser } from '../../api/NFTeamApi';
+import { getMyPage, getUser } from '../../api/NFTeamApi';
 import useApiPrivate from '../../hooks/useApiPrivate';
-import { ColInfo } from '../Home/Banner';
+
 import SelectCollection from './SelectCollection';
 import { toast } from 'react-toastify';
 import { AxiosError } from 'axios';
+import { Profile } from '../../pages/Account';
+
+export interface ColInfo {
+  collectionId: number;
+  collectionName: string;
+  logoImgName: string;
+}
 
 interface Collections {
   collections?: ColInfo[];
@@ -50,11 +57,21 @@ export default function CreateAsset({ itemFile, itemName }: Image) {
     resolver: yupResolver(schema),
   });
 
-  const id = localStorage.getItem('id');
+  const apiPrivate = useApiPrivate();
+  const accessToken = localStorage.getItem('accessToken');
+
+  const { data } = useQuery<Profile>({
+    queryKey: ['myPage'],
+    queryFn: () => getMyPage(apiPrivate, accessToken),
+    enabled: !!accessToken,
+  });
+
+  const myId = data?.member.memberId;
 
   const { isLoading: loading } = useQuery<Collections>({
-    queryKey: ['members', id],
-    queryFn: () => getUser(id!),
+    queryKey: ['members', myId],
+    queryFn: () => getUser(myId?.toString()!),
+    enabled: !!myId,
     onSuccess: (data) => {
       if (data.collections?.length) {
         setCollections(data.collections);
@@ -65,8 +82,6 @@ export default function CreateAsset({ itemFile, itemName }: Image) {
       }
     },
   });
-
-  const apiPrivate = useApiPrivate();
 
   const { mutate, isLoading } = useMutation({
     mutationFn: (item: ItemInfo) =>

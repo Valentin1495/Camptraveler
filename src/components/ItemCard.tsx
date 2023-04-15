@@ -1,9 +1,11 @@
 import { useState } from 'react';
 import { Item } from '../pages/CollectionDetails';
 import { BiTrash } from 'react-icons/bi';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import useApiPrivate from '../hooks/useApiPrivate';
 import { toast } from 'react-toastify';
+import { Profile } from '../pages/Account';
+import { getMyPage } from '../api/NFTeamApi';
 
 export default function ItemCard({
   itemId,
@@ -16,9 +18,19 @@ export default function ItemCard({
   collectionName,
 }: Item) {
   const [show, setShow] = useState(false);
-  const id = localStorage.getItem('id');
+
   const apiPrivate = useApiPrivate();
   const queryClient = useQueryClient();
+
+  const accessToken = localStorage.getItem('accessToken');
+
+  const { data } = useQuery<Profile>({
+    queryKey: ['myPage'],
+    queryFn: () => getMyPage(apiPrivate, accessToken),
+    enabled: !!accessToken,
+  });
+
+  const myId = data?.member.memberId;
 
   const { mutate, isLoading } = useMutation({
     mutationFn: () => apiPrivate.delete('/api/items/' + itemId),
@@ -49,7 +61,7 @@ export default function ItemCard({
             mutate();
           }}
           className={`duration-300 rounded-full p-1.5 bg-black/40 hover:bg-black z-10 absolute top-2 right-2 
-          ${show && ownerId.toString() === id ? 'opacity-100' : 'opacity-0'} `}
+          ${show && ownerId === myId ? 'opacity-100' : 'opacity-0'} `}
         >
           <BiTrash className='h-6 w-6 text-gray-300' />
         </button>
