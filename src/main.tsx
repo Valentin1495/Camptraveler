@@ -12,7 +12,6 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { AxiosError } from 'axios';
 import ScrollToTop from './components/ScrollToTop';
-import { RecoilRoot } from 'recoil';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -32,24 +31,22 @@ const queryClient = new QueryClient({
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
     <QueryClientProvider client={queryClient}>
-      <RecoilRoot>
-        <BrowserRouter>
-          <ScrollToTop />
-          <App />
-          <ToastContainer
-            position='bottom-right'
-            autoClose={5000}
-            hideProgressBar={false}
-            newestOnTop={false}
-            closeOnClick
-            rtl={false}
-            pauseOnFocusLoss
-            draggable
-            pauseOnHover
-            theme='light'
-          />
-        </BrowserRouter>
-      </RecoilRoot>
+      <BrowserRouter>
+        <ScrollToTop />
+        <App />
+        <ToastContainer
+          position='bottom-right'
+          autoClose={5000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme='light'
+        />
+      </BrowserRouter>
     </QueryClientProvider>
   </React.StrictMode>
 );
