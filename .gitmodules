@@ -1,3 +1,0 @@
-[submodule "server/src/main/resources/config"]
-	path = server/src/main/resources/config
-	url = git@github.com:sojeongLee0125/secret-config.git

@@ -1,4 +1,0 @@
-spring:
-  config:
-    import:
-      - config/application-prod.yml
