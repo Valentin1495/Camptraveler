@@ -1,13 +1,18 @@
-<a href="https://camptravelerbyeunho.vercel.app">
-  <img alt="Hero section" src="https://github.com/user-attachments/assets/e8b91f6b-b105-4221-b348-6a1f3159fe2e" />
-  <h1 align="center">Camptraveler</h1>
-</a>
+<h1 align="center">Metaverse</h1>
 
 <p align="center">
-  여행 서비스 소개 페이지
+  애니메이션 랜딩 페이지
 </p>
+<br/>
+
+## Features
+
+https://github.com/user-attachments/assets/b074e957-e56c-454e-ae28-73a2d9ec7ce8
 
 ## Tech Stack
 
-- 코어: React, TypeScript, Next.js
+- 코어: React, Next.js
 - 스타일링: Tailwind CSS
+- 애니메이션: Framer Motion
+- 패키지 매니저: NPM
+- CI/CD: Vercel
